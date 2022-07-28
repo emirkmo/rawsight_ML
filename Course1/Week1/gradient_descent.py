@@ -1,9 +1,9 @@
 import numpy as np
-from utils import OLS, LeastSquaresCostFunction, CostFunction, get_n_features
+from utils import LinearModel, LeastSquaresCostFunction, CostFunction, get_n_features
 
 
-def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: OLS, cost_function: CostFunction,
-                           learning_rate: float, max_iter: int) -> OLS:
+def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: LinearModel, cost_function: CostFunction,
+                           learning_rate: float, max_iter: int) -> LinearModel:
     """
     Gradient descent algorithm for linear regression.
     Args:
@@ -37,7 +37,7 @@ def main():
     x_train = np.array([1.0, 2.0])  # features
     y_train = np.array([300.0, 500.0])  # target value
 
-    model = OLS(w=100, b=0.5)
+    model = LinearModel(w=100, b=0.5)
     cost_function = LeastSquaresCostFunction()
 
     initial_cost = cost_function(x_train, y_train, model)

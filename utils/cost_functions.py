@@ -14,13 +14,13 @@ class CostFunction(Protocol):
 
 
 def least_squares_cost(fy, y):
-    """ Simple squared residual cost function for OLS, vectorized form.
+    """ Simple squared residual cost function for LinearModel, vectorized form.
     """
     return np.sum((fy - y) ** 2) / 2 / len(y)
 
 
 def least_squares_cost_gradient(fy, y):
-    """ Simple squared residual cost function for OLS, vectorized form.
+    """ Simple squared residual cost function for LinearModel, vectorized form.
     """
     return (fy - y) / len(y)
 
