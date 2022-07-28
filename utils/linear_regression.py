@@ -1,11 +1,20 @@
-from typing import Optional
-
+from typing import Optional, Protocol
 import numpy as np
-from numpy.typing import NDArray
+from numpy.typing import NDArray, ArrayLike
 
 
-class OLS:
-    #parameter_names = ["w", "b"]
+class Model(Protocol):
+    def __call__(self, x: NDArray) -> NDArray:
+        ...
+
+    def partial_derivatives(self, x: NDArray) -> NDArray:
+        ...
+
+    def evaluate(self, x: NDArray, y: NDArray) -> ArrayLike | float:
+        ...
+
+
+class LinearModel:
 
     def __init__(self, w=(1,), b=0, n_features=1):
         """w should have the same length as n_features.
@@ -46,7 +55,7 @@ class OLS:
                              f" n is number of features and is currently: {self.n}.")
         return w, x
 
-    def linear_regression(self, x: NDArray):
+    def evaluate(self, x: NDArray):
         """x is array of input X, where its shape must be m * n where n is
         the number of features."""
         w, x = self.get_w_x_as_array(x)
@@ -75,7 +84,7 @@ class OLS:
         return self.dw(x), self.db()
 
     def __call__(self, x):
-        return self.linear_regression(x)
+        return self.evaluate(x)
 
     def __repr__(self):
-        return f"OLS(w={self.w}, b={self.b}, n_features={self.n})"
+        return f"LinearModel(w={self.w}, b={self.b}, n_features={self.n})"
