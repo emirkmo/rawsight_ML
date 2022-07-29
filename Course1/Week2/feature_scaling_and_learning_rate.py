@@ -1,7 +1,6 @@
 from utils import LeastSquaresCostFunction, MaxNorm, MeanNorm, ZScoreNorm
 from datasets import load_housing_data, Dataset
-from utils.models import LinearModel
-from utils.optimizers import batch_gradient_descent
+from .multiple_linear_regression import run
 
 
 def load(norm: bool = False):
@@ -11,19 +10,6 @@ def load(norm: bool = False):
         housing_dataset.normalize_features(ZScoreNorm())
     return housing_dataset
 
-
-def run(housing_dataset: Dataset, learning_rate: float = 0.1):
-    # Run multi-feature linear regression with batch gradient descent
-    model = LinearModel(w=1, b=0, n_features=housing_dataset.num_features)
-    cost_function = LeastSquaresCostFunction()
-    initial_cost = cost_function(housing_dataset.X_train, housing_dataset.y_train, model)
-    print(f"Initial cost: {initial_cost}, initial model: {model}")
-
-    model = batch_gradient_descent(housing_dataset.X_train, housing_dataset.y_train, model, cost_function,
-                                   learning_rate=learning_rate, max_iter=1000)
-
-    final_cost = cost_function(housing_dataset.X_train, housing_dataset.y_train, model)
-    print(f"Final cost: {final_cost}, final model: {model}")
 
 def main():
     housing_dataset = load(norm=False)
