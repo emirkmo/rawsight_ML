@@ -1,6 +1,8 @@
 from typing import Optional
 from pathlib import Path
 from dataclasses import dataclass, field
+from utils.normalization import NormalizerProtocol, ZScoreNorm
+from utils.input_validation import get_n_features
 
 import pandas as pd
 from numpy.typing import NDArray
@@ -17,11 +19,13 @@ class Dataset:
     df: pd.DataFrame
     target_name: Optional[str | int] = -1
     features: pd.DataFrame = None
+    num_features: int = field(init=False)
     target: pd.Series = None
-    X_train: pd.DataFrame = NDArray
-    X_test: pd.DataFrame = NDArray
-    y_train: pd.Series = NDArray
-    y_test: pd.Series = NDArray
+    X_train: NDArray = None
+    X_test: NDArray = None
+    y_train: NDArray = None
+    y_test: NDArray = None
+    normalizer: NormalizerProtocol = field(default_factory=ZScoreNorm)
 
     def __post_init__(self):
         """
@@ -31,6 +35,7 @@ class Dataset:
             self.target_name = self.df.columns[self.target_name]
         self.target = self.df[self.target_name]
         self.features = self.df.drop(self.target_name, axis=1)
+        self.num_features = get_n_features(self.features)
 
     def split_train_test(self, test_size: float = 0.2) -> None:
         """
@@ -45,6 +50,25 @@ class Dataset:
 
             self.X_test = (self.features.iloc[int(len(self.features) * test_size):]).values
             self.y_test = (self.target.iloc[int(len(self.target) * test_size):]).values
+
+    def normalize_features(self, normalizer: Optional[NormalizerProtocol] = None) -> None:
+        """
+        Normalizes the input train and test samples of the dataset.
+        Normalization factors are saved in the `norm` dictionary of the Normalizer.
+        If None, the class instance normalizer is used, else its overwritten.
+        """
+        self.normalizer = normalizer or self.normalizer
+        self.X_train = self.normalizer(self.X_train)
+        if self.X_test is not None:
+            self.X_test = self.normalizer(self.X_test)
+
+    def denormalize_features(self) -> None:
+        """
+        Denormalizes the input train and test samples of the dataset.
+        """
+        self.X_train = self.normalizer.inverse(self.X_train)
+        if self.X_test is not None:
+            self.X_test = self.normalizer.inverse(self.X_test)
 
 
 def load_housing_data(filename: str = "houses.csv") -> Dataset:

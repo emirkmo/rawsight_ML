@@ -1,17 +1,24 @@
 from typing import Optional
 import numpy as np
-from numpy.typing import NDArray
+from numpy.typing import NDArray, ArrayLike
 from .model import Model
 
 
+# noinspection PyProtocol
 class LinearModel(Model):
 
-    def __init__(self, w=(1,), b=0, n_features=1):
+    def __init__(self, w: ArrayLike = (1,), b: float = 0,
+                 n_features: int = 1, verify_inputs: bool = True):
         """w should have the same length as n_features.
-        Will be automatically done if w has length 1 else will raise."""
+        Will be automatically done if w has length 1 else will raise.
+        verify_inputs will coerce x and raise if x has wrong shape,
+        set verify_inputs to false in order to disable this check,
+        useful to reduce overhead when iterating.
+        """
         self.w = self.verify_w(w, n_features)
         self.b = b
         self.n = n_features
+        self.verify = verify_inputs
 
     @staticmethod
     def verify_w(w, n):
@@ -35,21 +42,24 @@ class LinearModel(Model):
             return self.n == 1
         return x.shape[1] == self.n
 
-    def get_w_x_as_array(self, x: NDArray):
+    def get_w_as_array(self) -> float | NDArray:
+        return np.array(self.w) if len(self.w) > 1 else self.w[0]
+
+    def get_x_as_array(self, x: NDArray) -> NDArray:
         """x is array of input X, where its shape must be m * n where n is
         the number of features."""
-        w = np.array(self.w)
         x = np.array(x)
         if not self._verify_input_dimension(x):
             raise ValueError(f"x must be m * n, but was was {x.shape}."
                              f" n is number of features and is currently: {self.n}.")
-        return w, x
+        return x
 
-    def evaluate(self, x: NDArray):
+    def evaluate(self, x: NDArray) -> NDArray | float:
         """x is array of input X, where its shape must be m * n where n is
         the number of features."""
-        w, x = self.get_w_x_as_array(x)
-        return w * x + self.b
+        x = self.get_x_as_array(x) if self.verify else x
+        w = self.get_w_as_array()
+        return np.dot(x, w) + self.b
 
     @staticmethod
     def dw(x: NDArray):

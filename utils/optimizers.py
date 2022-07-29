@@ -23,7 +23,7 @@ def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Model, cost_func
     niter = 0
     while niter < max_iter:
         # compute gradient
-        gradients = np.array(cost_function.compute_gradient(x, y, model))
+        gradients = np.array(cost_function.compute_gradient(x, y, model), dtype=object)
 
         # update model & parameters
         parameters = parameters - learning_rate * gradients

@@ -3,7 +3,7 @@ Data normalizers. Normalizers
 follow a common NormalizerProtocol interface.
 """
 import numpy as np
-from typing import Protocol, Callable, Sequence
+from typing import Protocol
 from numpy.typing import ArrayLike
 
 
@@ -18,6 +18,9 @@ class NormalizerProtocol(Protocol):
 
     @property
     def norm(self) -> dict[str, float | ArrayLike]:
+        ...
+
+    def inverse(self, x: np.ndarray) -> np.ndarray:
         ...
 
     def __repr__(self) -> str:
@@ -45,6 +48,12 @@ class ZScoreNorm:
     def norm(self) -> dict[str, float | ArrayLike]:
         return self._norm_pars
 
+    def inverse(self, x: np.ndarray) -> np.ndarray:
+        """Inverse normalization."""
+        if self.norm.values()[0] is None:
+            raise ValueError("Normalization parameters are not set.")
+        return x * self.norm['std'] + self.norm['mean']
+
     def __repr__(self):
         return f"ZScoreNorm() with parameters: {self.norm}"
 
@@ -68,6 +77,12 @@ class MaxNorm:
     @property
     def norm(self) -> dict[str, float | ArrayLike]:
         return self._norm_pars
+
+    def inverse(self, x: np.ndarray) -> np.ndarray:
+        """Inverse normalization."""
+        if self.norm.values()[0] is None:
+            raise ValueError("Normalization parameters are not set.")
+        return x * self.norm['max']
 
     def __repr__(self):
         return f"MaxNorm() with parameters: {self.norm}"
@@ -95,5 +110,12 @@ class MeanNorm:
     def norm(self) -> dict[str, float | ArrayLike]:
         return self._norm_pars
 
+    def inverse(self, x: np.ndarray) -> np.ndarray:
+        """Inverse normalization."""
+        if self.norm.values()[0] is None:
+            raise ValueError("Normalization parameters are not set.")
+        return x * self.norm['data_range'] + self.norm['mean']
+
     def __repr__(self):
         return f"MeanNorm() with parameters: {self.norm}"
+

@@ -9,5 +9,5 @@ class Model(Protocol):
     def partial_derivatives(self, x: NDArray) -> NDArray:
         ...
 
-    def evaluate(self, x: NDArray, y: NDArray) -> ArrayLike | float:
+    def evaluate(self, x: NDArray) -> ArrayLike | float:
         ...

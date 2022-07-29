@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Callable, Protocol
-
+from utils.input_validation import transpose
 
 class CostFunction(Protocol):
     def __call__(self, x, y, model):
@@ -48,7 +48,8 @@ class LeastSquaresCostFunction:
             grad_theta_i (ndarray (n,)): The partial derivative of the cost function with respect to the model parameters
         """
         fy = model(x)
-        return tuple([sum(self.gradient(fy, y) * partial) for partial in model.partial_derivatives(x)])
+        pds = model.partial_derivatives(x)
+        return tuple([np.sum(self.gradient(fy, y) * transpose(partial), axis=-1) for partial in pds])
 
     def compute_cost(self, fy, y):
         """
