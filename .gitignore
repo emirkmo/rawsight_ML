@@ -2,3 +2,5 @@
 .idea/
 
 utils/__pycache__/
+
+*.pyc
