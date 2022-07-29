@@ -1,20 +1,10 @@
-from typing import Optional, Protocol
+from typing import Optional
 import numpy as np
-from numpy.typing import NDArray, ArrayLike
+from numpy.typing import NDArray
+from .model import Model
 
 
-class Model(Protocol):
-    def __call__(self, x: NDArray) -> NDArray:
-        ...
-
-    def partial_derivatives(self, x: NDArray) -> NDArray:
-        ...
-
-    def evaluate(self, x: NDArray, y: NDArray) -> ArrayLike | float:
-        ...
-
-
-class LinearModel:
+class LinearModel(Model):
 
     def __init__(self, w=(1,), b=0, n_features=1):
         """w should have the same length as n_features.
