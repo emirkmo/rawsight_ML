@@ -38,9 +38,7 @@ class LinearModel(Model):
         self.n += 1
 
     def _verify_input_dimension(self, x):
-        if len(x.shape) == 1:
-            return self.n == 1
-        return x.shape[1] == self.n
+        return x.shape[-1] == self.n or (self.n == 1 and len(x.shape) == 1)
 
     def get_w_as_array(self) -> float | NDArray:
         return np.array(self.w) if len(self.w) > 1 else self.w[0]
