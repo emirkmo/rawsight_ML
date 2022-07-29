@@ -1,36 +1,5 @@
 import numpy as np
-from utils import LinearModel, LeastSquaresCostFunction, CostFunction, get_n_features
-
-
-def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: LinearModel, cost_function: CostFunction,
-                           learning_rate: float, max_iter: int) -> LinearModel:
-    """
-    Gradient descent algorithm for linear regression.
-    Args:
-        x (ndarray (m,)): Data, m examples
-        y (ndarray (m,)): target values
-        model    : callable initialized with parameters
-        cost_function : callable that computes the cost function for linear regression
-        learning_rate : learning rate for gradient descent
-        max_iter : maximum number of iterations to run gradient descent
-    Returns:
-        model : callable initialized with parameters that minimize the cost function
-    """
-    # initialize model parameters
-    parameters = np.array(model.parameters, dtype=object)
-
-    # run gradient descent
-    niter = 0
-    while niter < max_iter:
-        # compute gradient
-        gradients = np.array(cost_function.compute_gradient(x, y, model))
-
-        # update model & parameters
-        parameters = parameters - learning_rate * gradients
-        model.parameters = parameters
-
-        niter += 1
-    return model
+from utils import LinearModel, LeastSquaresCostFunction, batch_gradient_descent
 
 
 def main():
