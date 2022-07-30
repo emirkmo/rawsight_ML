@@ -1,7 +1,7 @@
 from typing import Optional
 import numpy as np
 from numpy.typing import NDArray, ArrayLike
-from .model import Model
+from .model import Model, verify_w
 
 
 # noinspection PyProtocol
@@ -15,22 +15,10 @@ class LinearModel(Model):
         set verify_inputs to false in order to disable this check,
         useful to reduce overhead when iterating.
         """
-        self.w = self.verify_w(w, n_features)
+        self.w = verify_w(w, n_features)
         self.b = b
         self.n = n_features
         self.verify = verify_inputs
-
-    @staticmethod
-    def verify_w(w, n):
-        if getattr(w, '__iter__', None) is None:
-            w = np.atleast_1d(w)
-        if n < 1 or not np.isfinite(n):
-            raise ValueError("n_features must be positive definite and atleast 1.")
-        if n == 1:
-            return [w[0]]
-        if len(w) in (1, n):
-            return list(np.ones(n) * w)
-        raise ValueError(f"w was {w}, but should be length of n_features or 1.")
 
     def add_feature(self, w_0=1):
         """add another input feature with initial guess w_0."""
