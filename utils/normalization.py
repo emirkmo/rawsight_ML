@@ -40,7 +40,7 @@ class ZScoreNorm:
 
     def normalize(self, x: np.ndarray) -> np.ndarray:
         mean = x.mean(axis=0)
-        std = x.std(axis=0)
+        std = x.std(axis=0, ddof=0)
         self._norm_pars['mean'], self._norm_pars['std'] = mean, std
         return (x - mean) / std
 
@@ -50,7 +50,7 @@ class ZScoreNorm:
 
     def inverse(self, x: np.ndarray) -> np.ndarray:
         """Inverse normalization."""
-        if self.norm.values()[0] is None:
+        if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
         return x * self.norm['std'] + self.norm['mean']
 
