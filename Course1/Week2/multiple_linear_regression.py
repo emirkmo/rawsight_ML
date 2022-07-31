@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from utils import LeastSquaresCostFunction
+from utils import least_squares_cost_function
 from datasets import Dataset
 from utils.models import LinearModel
 from utils.optimizers import batch_gradient_descent
@@ -9,7 +9,7 @@ from utils.optimizers import batch_gradient_descent
 def run(housing_dataset: Dataset, learning_rate: float = 0.1):
     # Run multi-feature linear regression with batch gradient descent
     model = LinearModel(w=0, b=0, n_features=housing_dataset.num_features)
-    cost_function = LeastSquaresCostFunction()
+    cost_function = least_squares_cost_function
     initial_cost = cost_function(housing_dataset.X_train, housing_dataset.y_train, model)
     print(f"Initial cost: {initial_cost}, initial model: {model}")
 

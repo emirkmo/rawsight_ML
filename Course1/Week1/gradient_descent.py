@@ -1,5 +1,5 @@
 import numpy as np
-from utils import LinearModel, LeastSquaresCostFunction, batch_gradient_descent
+from utils import LinearModel, least_squares_cost_function, batch_gradient_descent
 
 
 def main():
@@ -7,7 +7,7 @@ def main():
     y_train = np.array([300.0, 500.0])  # target value
 
     model = LinearModel(w=100, b=0.5)
-    cost_function = LeastSquaresCostFunction()
+    cost_function = least_squares_cost_function
 
     initial_cost = cost_function(x_train, y_train, model)
     print(f"Initial cost: {initial_cost}, initial model: {model}")

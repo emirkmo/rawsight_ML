@@ -1,4 +1,4 @@
-from utils import LeastSquaresCostFunction, MaxNorm, MeanNorm, ZScoreNorm
+from utils import least_squares_cost_function, MaxNorm, MeanNorm, ZScoreNorm
 from datasets import load_housing_data, Dataset
 from .multiple_linear_regression import run
 

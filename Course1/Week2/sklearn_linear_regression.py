@@ -3,7 +3,7 @@ from datasets import Dataset, load_housing_data
 from utils import ZScoreNorm
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import SGDRegressor
-from utils.cost_functions import LeastSquaresCostFunction
+from utils.cost_functions import least_squares_cost_function
 from utils.optimizers import batch_gradient_descent
 from utils.models import LinearModel
 
@@ -29,7 +29,7 @@ sgdr = SGDRegressor(max_iter=1000)
 sgdr.fit(housing_data.X_train, housing_data.y_train)
 # Fit with mine. Fixed learning rate, L2 regularization.
 model = LinearModel(w=1, b=0, n_features=housing_data.X_train.shape[1])
-cost_function = LeastSquaresCostFunction()
+cost_function = least_squares_cost_function
 model = batch_gradient_descent(housing_data.X_train, housing_data.y_train, model, cost_function,
                                learning_rate=0.03, max_iter=20000)
 # Compare the results

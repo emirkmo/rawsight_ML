@@ -1,6 +1,6 @@
-from .cost_functions import LeastSquaresCostFunction, CostFunction, least_squares_cost, least_squares_cost_gradient
-from utils.models.linear_regression import LinearModel, Model
-from .input_validation import get_n_features
+from utils.cost_functions import CostFunction, least_squares_cost_function, logistic_cost_function
+from utils.models import LinearModel, Model, LogisticModel, add_poly_features
+from .input_validation import get_n_features, transpose
 from .optimizers import batch_gradient_descent
 from .normalization import NormalizerProtocol, ZScoreNorm, MaxNorm, MeanNorm
 
