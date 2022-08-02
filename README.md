@@ -1,5 +1,5 @@
 [![Python tests](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml/badge.svg)](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml)
-# Labs for Andrew NG's Deep Learning Course 
+# Labs for Stanford ML (Andrew NG's) Machine Learning Course on Coursera
 
 Implemented in Python and following (some) Object-Oriented Design principles,
 including SOLID, but also using elements of functional design patterns. 
