@@ -16,7 +16,7 @@ class LogisticModel(BaseLinearModel):
 
     def __init__(self, w: ArrayLike = (1,), b: float = 0,
                  n_features: int = 1, verify_inputs: bool = True, verify_params: bool = True,
-                 activation_function: LogisticMapper = sigmoid):
+                 activation_function: LogisticMapper = sigmoid, threshold: float = 0.5):
         """w should have the same length as n_features.
         Will be automatically done if w has length 1 else will raise.
         verify_inputs will coerce x and raise if x has wrong shape,
@@ -24,6 +24,7 @@ class LogisticModel(BaseLinearModel):
         useful to reduce overhead when iterating.
         """
         self.activation_function = activation_function
+        self.threshold = threshold
         super().__init__(w=w, b=b, n_features=n_features, verify_inputs=verify_inputs,
                          verify_params=verify_params)
 
@@ -36,3 +37,6 @@ class LogisticModel(BaseLinearModel):
 
     def partial_derivatives(self, x: NDArray):
         return self.dw(x), self.db()
+
+    def predict(self, x: NDArray) -> ArrayLike | float:
+        return np.array(self.evaluate(x) > self.threshold).astype(float)

@@ -1,4 +1,4 @@
-from typing import Protocol, Optional
+from typing import Protocol, Optional, Sequence, Iterable
 from numpy.typing import NDArray, ArrayLike
 import numpy as np
 
@@ -11,6 +11,18 @@ class Model(Protocol):
         ...
 
     def evaluate(self, x: NDArray) -> ArrayLike | float:
+        ...
+
+    # noinspection PyPropertyDefinition
+    @property
+    def parameters(self) -> ArrayLike:
+        ...
+
+    @parameters.setter
+    def parameters(self, param: ArrayLike):
+        ...
+
+    def predict(self, x: NDArray) -> ArrayLike | float:
         ...
 
 
@@ -106,3 +118,6 @@ class BaseLinearModel:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(w={self.w}, b={self.b}, n_features={self.n})"
+
+    def predict(self, x: NDArray) -> ArrayLike | float:
+        return self.evaluate(x)
