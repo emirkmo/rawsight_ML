@@ -1,3 +1,4 @@
+[![Python tests](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml/badge.svg)](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml)
 # Labs for Andrew NG's Deep Learning Course 
 
 Implemented in Python and following (some) Object-Oriented Design principles,
