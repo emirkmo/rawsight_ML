@@ -4,10 +4,14 @@ import numpy as np
 
 
 class Model(Protocol):
+
+    def __init__(self):
+        ...
+
     def __call__(self, x: NDArray) -> NDArray:
         ...
 
-    def partial_derivatives(self, x: NDArray) -> NDArray:
+    def partial_derivatives(self, x: NDArray) -> Sequence[NDArray | float]:
         ...
 
     def evaluate(self, x: NDArray) -> ArrayLike | float:
@@ -22,14 +26,17 @@ class Model(Protocol):
     def parameters(self, param: ArrayLike):
         ...
 
+    def decision(self, x: NDArray) -> NDArray:
+        ...
+
     def predict(self, x: NDArray) -> ArrayLike | float:
         ...
 
 
 class BaseLinearModel:
 
-    def __init__(self, w: ArrayLike = (1,), b: float = 0, n_features: int = 1,
-                 verify_inputs: bool = True, verify_params: bool = True):
+    def __init__(self, w: ArrayLike = (1,), b: ArrayLike | float = 0, n_features: int = 1,
+                 threshold: Optional[float] = None, verify_inputs: bool = True, verify_params: bool = True, **kwargs):
         """
         BaseLinearModel is a mixin class for Linear, Polynomial, and Logistic Regression.
         w should have the same length as n_features, will be automatically done if w has length 1
@@ -45,6 +52,7 @@ class BaseLinearModel:
         self.n = n_features
         self.verify_inputs = verify_inputs
         self.verify_params = verify_params
+        self.threshold = threshold
 
     @staticmethod
     def verify_w(w: ArrayLike, n: int) -> list[float]:
@@ -119,5 +127,68 @@ class BaseLinearModel:
     def __repr__(self):
         return f"{self.__class__.__name__}(w={self.w}, b={self.b}, n_features={self.n})"
 
-    def predict(self, x: NDArray) -> ArrayLike | float:
+    def decision(self, x: NDArray) -> NDArray:
+        return np.array(self.evaluate(x) > self.threshold).astype(int)
+
+    def predict(self, x: NDArray, thresh: bool = False) -> ArrayLike | float:
+        if self.threshold is None or not thresh:
+            return self.evaluate(x)
+        return self.decision(x)
+
+
+class BaseNeuralNetLinearModel:
+
+    def __init__(self, w: NDArray, b: NDArray, n_features: int = 1,
+                 threshold: Optional[float] = None, **kwargs):
+        """
+        BaseLinearModel is a mixin class for Linear, Polynomial, and Logistic Regression.
+        w should have the same length as n_features, will be automatically done if w has length 1
+        else will raise.
+        :param w: weight vector
+        :param b: bias
+        :param n_features: number of features
+        :param verify_inputs: coerce x and raise if x has wrong shape, set verify_inputs to false
+        :param verify_params: coerce w and b and raise if w has wrong shape, set verify_params to false
+        """
+        self.w = w
+        self.b = b
+        self.n = n_features
+        self.threshold = threshold
+
+    def evaluate(self, x: NDArray) -> ArrayLike | float:
+        raise NotImplementedError("evaluate must be implemented in main model class, not this mixin.")
+
+    @staticmethod
+    def dw(x: NDArray):
+        """partial derivative with respect to w"""
+        return x
+
+    @staticmethod
+    def db(x: Optional[NDArray] = None):
+        """partial derivative with respect to b"""
+        return 1.
+
+    @property
+    def parameters(self):
+        return np.array(self.w), np.array(self.b)
+
+    @parameters.setter
+    def parameters(self, parameters):
+        self.w, self.b = parameters
+
+    def partial_derivatives(self, x: NDArray):
+        return self.dw(x), self.db()
+
+    def __call__(self, x):
         return self.evaluate(x)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(w={self.w}, b={self.b}, n_features={self.n})"
+
+    def decision(self, x: NDArray) -> NDArray:
+        return np.array(self.evaluate(x) > self.threshold).astype(int)
+
+    def predict(self, x: NDArray, thresh: bool = False) -> ArrayLike | float:
+        if self.threshold is None or not thresh:
+            return self.evaluate(x)
+        return self.decision(x)

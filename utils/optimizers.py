@@ -1,5 +1,9 @@
 import numpy as np
 from utils import Model, CostFunction
+from typing import Callable
+
+
+Optimizer = Callable[[np.ndarray, np.ndarray, Model, CostFunction, ...], Model]
 
 
 def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Model, cost_function: CostFunction,
@@ -40,12 +44,14 @@ def regularized_batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Mode
     Args:
         x (ndarray (m,)): Data, m examples
         y (ndarray (m,)): target values
-        model    : callable initialized with parameters
-        cost_function : callable that computes the cost function for linear regression
-        learning_rate : learning rate for gradient descent
-        max_iter : maximum number of iterations to run gradient descent
+        model Model: callable initialized with parameters
+        cost_function CostFunction: callable that computes the cost function for linear regression
+        learning_rate float: learning rate for gradient descent
+        max_iter int: maximum number of iterations to run gradient descent
+        regularization_param float: regularization parameter
     Returns:
         model : callable initialized with parameters that minimize the cost function
+
     """
     # initialize model parameters
     parameters = np.array(model.parameters, dtype=object)

@@ -71,6 +71,22 @@ def test_regularized_better(housing_data, sgdr, linear_regression, linear_regres
     assert model_reg_cost <= model_cost
 
 
+def test_parity_to_tensorflow():
+    import tensorflow as tf
+    from datasets import load_tumor_simple
+    from utils.regression import LinearRegression
+
+    dataset = load_tumor_simple()
+
+    linear_layer = tf.keras.layers.Dense(units=1, input_dim=1, activation="linear", name='linear')
+    p_lin = linear_layer(dataset.X_train)
+    linear_regression = LinearRegression(x=dataset.X_train, y=dataset.y_train, w=linear_layer.get_weights()[0],
+                                         b=linear_layer.get_weights()[1])
+
+    assert all(abs(linear_regression.predict().reshape(-1, 1) - p_lin.numpy()) <= 0.01)
+
+
 if __name__ == '__main__':
     test_linear_regression_parameters_vs_sklearn()
     test_regularized_better()
+    test_parity_to_tensorflow()

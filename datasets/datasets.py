@@ -79,3 +79,23 @@ def load_housing_data(filename: str = "houses.csv") -> Dataset:
     dataset = Dataset(name="Housing", df=df, target_name="Price (1000s dollars)")
     dataset.split_train_test(test_size=0)
     return dataset
+
+
+def load_tumor_simple(filename: str = "tumors_simple.csv") -> Dataset:
+    """
+    Loads the tumor data from the given filename.
+    """
+    df = pd.read_csv(DATA_PATH/filename)
+    dataset = Dataset(name="Tumor", df=df, target_name="is_tumor")
+    dataset.split_train_test(test_size=0)
+    return dataset
+
+
+def load_coffee_data(filename: str = "coffee_data.csv") -> Dataset:
+    """
+    Loads the coffee data from the given filename.
+    """
+    df = pd.read_csv(DATA_PATH/filename)
+    dataset = Dataset(name="Coffee", df=df, target_name="Taste")
+    dataset.split_train_test(test_size=0)
+    return dataset

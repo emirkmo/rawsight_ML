@@ -27,6 +27,9 @@ class NormalizerProtocol(Protocol):
     def __repr__(self) -> str:
         ...
 
+    def apply_norm(self, x: np.ndarray) -> np.ndarray:
+        ...
+
 
 class ZScoreNorm:
     """z-score normalization: subtract mean, divide by
@@ -39,11 +42,16 @@ class ZScoreNorm:
     def __call__(self, x: np.ndarray) -> np.ndarray:
         return self.normalize(x)
 
+    @staticmethod
+    def _norm_function(x: np.ndarray, mean: ArrayLike, std: ArrayLike) -> np.ndarray:
+        """Normalization function."""
+        return (x - mean) / std
+
     def normalize(self, x: np.ndarray) -> np.ndarray:
         mean = x.mean(axis=0)
         std = x.std(axis=0, ddof=0)
         self._norm_pars['mean'], self._norm_pars['std'] = mean, std
-        return (x - mean) / std
+        return self._norm_function(x, mean, std)
 
     @property
     def norm(self) -> dict[str, Optional[float | ArrayLike]]:
@@ -58,6 +66,11 @@ class ZScoreNorm:
     def __repr__(self):
         return f"ZScoreNorm() with parameters: {self.norm}"
 
+    def apply_norm(self, x: np.ndarray) -> np.ndarray:
+        if list(self.norm.values())[0] is None:
+            raise ValueError("Normalization parameters are not set.")
+        return self._norm_function(x, self.norm['mean'], self.norm['std'])
+
 
 class MaxNorm:
     """Max normalization: divide by
@@ -70,10 +83,15 @@ class MaxNorm:
     def __call__(self, x: np.ndarray) -> np.ndarray:
         return self.normalize(x)
 
+    @staticmethod
+    def _norm_function(x: np.ndarray, max: ArrayLike) -> np.ndarray:
+        """Normalization function."""
+        return x / max
+
     def normalize(self, x: np.ndarray) -> np.ndarray:
         max = x.max(axis=0)
         self._norm_pars['max'] = max
-        return x / max
+        return self._norm_function(x, max)
 
     @property
     def norm(self) -> dict[str, Optional[float | ArrayLike]]:
@@ -88,6 +106,11 @@ class MaxNorm:
     def __repr__(self):
         return f"MaxNorm() with parameters: {self.norm}"
 
+    def apply_norm(self, x: np.ndarray) -> np.ndarray:
+        if list(self.norm.values())[0] is None:
+            raise ValueError("Normalization parameters are not set.")
+        return self._norm_function(x, self.norm['max'])
+
 
 class MeanNorm:
     """Mean normalization: subtract mean, divide by
@@ -100,12 +123,17 @@ class MeanNorm:
     def __call__(self, x: np.ndarray) -> np.ndarray:
         return self.normalize(x)
 
+    @staticmethod
+    def _norm_function(x: np.ndarray, mean: ArrayLike, data_range: ArrayLike) -> np.ndarray:
+        """Normalization function."""
+        return (x - mean) / data_range
+
     def normalize(self, x: np.ndarray) -> np.ndarray:
         mean = x.mean(axis=0)
         data_range = x.max(axis=0) - x.min(axis=0)
         self._norm_pars['mean'] = mean
         self._norm_pars['data_range'] = data_range
-        return (x - mean) / data_range
+        return self._norm_function(x, mean, data_range)
 
     @property
     def norm(self) -> dict[str, Optional[float | ArrayLike]]:
@@ -120,3 +148,7 @@ class MeanNorm:
     def __repr__(self):
         return f"MeanNorm() with parameters: {self.norm}"
 
+    def apply_norm(self, x: np.ndarray) -> np.ndarray:
+        if list(self.norm.values())[0] is None:
+            raise ValueError("Normalization parameters are not set.")
+        return self._norm_function(x, self.norm['mean'], self.norm['data_range'])

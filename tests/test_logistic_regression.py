@@ -1,10 +1,13 @@
-from sklearn.linear_model import LogisticRegression
-
+"""Logistic regression tests.
+TODO: Change tests to use the new LogisticRegression class and run_regression function.
+"""
 from utils.cost_functions import regularized_logistic_cost_function, logistic_cost_function
 from utils.models import LogisticModel
 from utils.input_validation import get_n_features
+from utils.regression import run_regression, LogisticRegression as MyLogisticRegression
 from Course1.Week3.logistic_regression import run_logistic_regression
 import numpy as np
+from sklearn.linear_model import LogisticRegression
 import pytest
 
 np.random.seed(1)
@@ -74,6 +77,21 @@ def test_logistic_regression_against_sklearn(regularized_logistic_regression):
     assert np.round(lr_model.intercept_, 1) == b
 
 
+def test_logistic_regression_against_tensorflow():
+    import tensorflow as tf
+    from datasets import load_tumor_simple
+    from utils.regression import LogisticRegression
+
+    dataset = load_tumor_simple()
+
+    logistic_layer = tf.keras.layers.Dense(units=1, input_dim=1, activation="sigmoid", name='logistic')
+    p_log = logistic_layer(dataset.X_train)
+    logistic_regression = LogisticRegression(x=dataset.X_train, y=dataset.y_train, w=logistic_layer.get_weights()[0],
+                                             b=logistic_layer.get_weights()[1])
+
+    assert all(abs(logistic_regression.predict() - p_log.numpy().reshape(-1)) <= 0.01)
+
+
 if __name__ == '__main__':
     test_regularized_logistic_cost_function()
     test_logistic_cost_function()
@@ -81,3 +99,4 @@ if __name__ == '__main__':
                                        learning_rate=0.3, max_iter=10000, w=dataset_2["w"],
                                        b=dataset_2["b"], cost_function=regularized_logistic_cost_function)
     test_logistic_regression_against_sklearn(my_model)
+    test_logistic_regression_against_tensorflow()

@@ -1,16 +1,16 @@
 import numpy as np
 from numpy.typing import NDArray, ArrayLike
-from .model import BaseLinearModel
+from .model import BaseLinearModel, BaseNeuralNetLinearModel
 from typing import Optional, Callable
 
 
-def linear(x: NDArray, w: ArrayLike, b: float) -> NDArray | float:
+def linear(x: NDArray, w: ArrayLike, b: ArrayLike | float) -> NDArray | float:
     return np.dot(x, w) + b
 
 
 class LinearModel(BaseLinearModel):
 
-    def __init__(self, w: ArrayLike = (1,), b: float = 0, n_features: int = 1,
+    def __init__(self, w: ArrayLike = (1,), b: ArrayLike | float = 0, n_features: int = 1,
                  verify_inputs: bool = True, verify_params: bool = True):
         """w should have the same length as n_features.
         Will be automatically done if w has length 1 else will raise.
@@ -32,3 +32,12 @@ class LinearModel(BaseLinearModel):
         return self.dw(x), self.db()
 
 
+class LinearNNModel(BaseNeuralNetLinearModel):
+    def __init__(self, w: NDArray, b: NDArray, n_features: int = 1):
+        super().__init__(w=w, b=b, n_features=n_features)
+
+    def evaluate(self, x: NDArray) -> NDArray | float:
+        return linear(x, self.w, self.b)
+
+    def partial_derivatives(self, x: NDArray):
+        return self.dw(x), self.db()
