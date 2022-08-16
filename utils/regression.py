@@ -6,7 +6,7 @@ from utils.cost_functions import regularized_logistic_cost_function, CostFunctio
 from utils.optimizers import regularized_batch_gradient_descent, Optimizer
 from utils import get_n_features
 from utils.scoring import accuracy
-from utils.models.logistic_regression import LogisticMapper, sigmoid
+from utils.models.logistic import LogisticMapper, sigmoid
 from enum import Enum
 import numpy as np
 
