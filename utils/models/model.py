@@ -29,7 +29,7 @@ class Model(Protocol):
     def decision(self, x: NDArray) -> NDArray:
         ...
 
-    def predict(self, x: NDArray) -> ArrayLike | float:
+    def predict(self, x: NDArray, thresh: bool) -> ArrayLike | float:
         ...
 
 

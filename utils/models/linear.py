@@ -2,10 +2,12 @@ import numpy as np
 from numpy.typing import NDArray, ArrayLike
 from .model import BaseLinearModel, BaseNeuralNetLinearModel
 from typing import Optional, Callable
+from utils.input_validation import transpose
 
 
 def linear(x: NDArray, w: ArrayLike, b: ArrayLike | float) -> NDArray | float:
-    return np.dot(x, w) + b
+    #return np.matmul(x, transpose(w)) + b
+    return np.dot(x, transpose(w)) + b
 
 
 class LinearModel(BaseLinearModel):

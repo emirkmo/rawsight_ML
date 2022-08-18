@@ -9,8 +9,7 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  contents: read
+permissions: write-all
 
 jobs:
   build:
@@ -23,12 +22,18 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
+        cache: 'pip'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest numpy sklearn pandas
+        pip install wheel
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        python -m pytest
+        python -m pytest --cache-clear --cov=utils | tee pytest-coverage.txt
+    - name: Pytest coverage report
+      uses: MishaKav/pytest-coverage-comment@v1.1.32
+      with:
+        pytest-coverage-path: ./pytest-coverage.txt
+        token: ${{ secrets.GITHUB_TOKEN }}

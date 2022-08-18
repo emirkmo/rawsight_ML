@@ -5,7 +5,7 @@ from utils.cost_functions import regularized_logistic_cost_function, logistic_co
 from utils.models import LogisticModel
 from utils.input_validation import get_n_features
 from utils.regression import run_regression, LogisticRegression as MyLogisticRegression
-from Course1.Week3.logistic_regression import run_logistic_regression
+#from Course1.Week3.logistic_regression import run_logistic_regression
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 import pytest
@@ -59,13 +59,17 @@ def test_logistic_cost_function():
 
 @pytest.fixture
 def regularized_logistic_regression():
-    my_model = run_logistic_regression(dataset_2["X"], dataset_2["y"],
-                                       learning_rate=0.3, max_iter=10000, w=dataset_2["w"],
-                                       b=dataset_2["b"], cost_function=regularized_logistic_cost_function)
+    regression = run_regression("logistic", dataset_2["X"], dataset_2["y"], 0.3, 10000,
+                                dataset_2["w"], dataset_2["b"], 1)
+    # my_model = run_logistic_regression(dataset_2["X"], dataset_2["y"],
+    #                                    learning_rate=0.1, max_iter=20000, w=dataset_2["w"],
+    #                                    b=dataset_2["b"], cost_function=regularized_logistic_cost_function)
+    my_model = regression.model
     return my_model  # swap to yield if adding cleanup.
 
 
 def test_logistic_regression_against_sklearn(regularized_logistic_regression):
+    np.random.seed(1)
     my_model = regularized_logistic_regression
     w, b = my_model.parameters
     w = np.round(w, 2)
@@ -95,8 +99,8 @@ def test_logistic_regression_against_tensorflow():
 if __name__ == '__main__':
     test_regularized_logistic_cost_function()
     test_logistic_cost_function()
-    my_model = run_logistic_regression(dataset_2["X"], dataset_2["y"],
-                                       learning_rate=0.3, max_iter=10000, w=dataset_2["w"],
-                                       b=dataset_2["b"], cost_function=regularized_logistic_cost_function)
-    test_logistic_regression_against_sklearn(my_model)
+    # my_model = run_logistic_regression(dataset_2["X"], dataset_2["y"],
+    #                                    learning_rate=0.3, max_iter=10000, w=dataset_2["w"],
+    #                                    b=dataset_2["b"], cost_function=regularized_logistic_cost_function)
+    test_logistic_regression_against_sklearn()
     test_logistic_regression_against_tensorflow()

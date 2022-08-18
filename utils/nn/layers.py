@@ -1,8 +1,8 @@
 """Class for Dense layer in a neural network."""
 from typing import Optional, Protocol
 from numpy.typing import ArrayLike, NDArray
-from utils.models.logistic_regression import LogisticNNModel
-from utils.models.linear_regression import LinearNNModel
+from utils.models.logistic import LogisticNNModel
+from utils.models.linear import LinearNNModel
 from enum import Enum
 import numpy as np
 from utils.models.model import BaseLinearModel, BaseNeuralNetLinearModel

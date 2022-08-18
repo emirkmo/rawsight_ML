@@ -27,10 +27,11 @@ def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Model, cost_func
     niter = 0
     while niter < max_iter:
         # compute gradient
-        gradients = np.array(cost_function.compute_gradient(x, y, model), dtype=object)
+        gradients = cost_function.compute_gradient(x, y, model, lamb=0)
 
         # update model & parameters
-        parameters = parameters - learning_rate * gradients
+        for i in range(len(parameters)):
+            parameters[i] = parameters[i] - learning_rate * gradients[i]
         model.parameters = parameters
 
         niter += 1
@@ -54,16 +55,15 @@ def regularized_batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Mode
 
     """
     # initialize model parameters
-    parameters = np.array(model.parameters, dtype=object)
-
+    parameters = list(model.parameters)
     # run gradient descent
     niter = 0
     while niter < max_iter:
         # compute gradient
-        gradients = np.array(cost_function.compute_gradient(x, y, model, lamb=regularization_param), dtype=object)
-
+        gradients = cost_function.compute_gradient(x, y, model, lamb=regularization_param)
         # update model & parameters
-        parameters = parameters - learning_rate * gradients
+        for i in range(len(parameters)):
+            parameters[i] = parameters[i] - learning_rate * gradients[i]
         model.parameters = parameters
 
         niter += 1

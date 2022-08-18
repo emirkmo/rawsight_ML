@@ -1,9 +1,8 @@
 from .model import BaseLinearModel, BaseNeuralNetLinearModel
-from .linear_regression import linear
+from .linear import linear
 from numpy.typing import ArrayLike, NDArray
 import numpy as np
-from typing import Callable
-
+from typing import Callable, Optional
 
 LogisticMapper = Callable[[ArrayLike], ArrayLike]
 
