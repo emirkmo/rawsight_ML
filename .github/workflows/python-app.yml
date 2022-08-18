@@ -33,9 +33,7 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest --cache-clear --cov=utils | tee pytest-coverage.txt
-      env:
-          JWT_SECRET_KEY: ${{ github.sha }}
-    - name: Coverage report
-      uses: coroo/pytest-coverage-commentator@v1.0.2
+    - name: Pytest coverage report
+      uses: MishaKav/pytest-coverage-comment@main
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        pytest-coverage-path: ./pytest-coverage.txt
