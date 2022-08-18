@@ -7,6 +7,7 @@ from utils.cost_functions import least_squares_cost_function
 from utils.cost_functions.cost_functions import _least_squares_cost
 from utils.optimizers import batch_gradient_descent, regularized_batch_gradient_descent
 from utils.models import LinearModel, Model
+from utils.regression import run_regression
 from functools import partial
 import pytest
 
@@ -14,6 +15,7 @@ Optimizer = Callable[..., Model]
 
 
 def run_linear_regression(dataset: Dataset, optimizer: Optimizer) -> Model:
+    #regression = run_regression("linear", dataset.X_train, dataset.y_train optimizer)
     model = LinearModel(w=1, b=0, n_features=dataset.X_train.shape[1])
     return optimizer(dataset.X_train, dataset.y_train, model=model)
 

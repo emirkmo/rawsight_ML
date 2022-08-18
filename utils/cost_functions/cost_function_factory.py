@@ -1,13 +1,15 @@
-from utils.input_validation import transpose
+from utils.input_validation import get_n_features, get_n_classes
 from utils.models import Model
-from typing import Callable, Optional, Type
+from typing import Callable, Optional, Type, Any
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from abc import ABC, abstractmethod
 from .regularization import Regularization
 
-_CostFunctionCallable = Callable[[ArrayLike, ArrayLike], float]
-_CostFunctionGradientCallable = Callable[[ArrayLike, ArrayLike], ArrayLike]
+NDArrayInt = np.ndarray[Any, np.dtype[int]]
+_CostFunctionCallable = Callable[[ArrayLike, ArrayLike], float] | Callable[[ArrayLike, NDArrayInt], float]
+_CostFunctionGradientCallable = Callable[[ArrayLike, ArrayLike], ArrayLike] | Callable[[ArrayLike, NDArrayInt],
+                                                                                       ArrayLike]
 
 
 class AbstractCostFunction(ABC):
@@ -71,16 +73,24 @@ class CostFunction(AbstractCostFunction):
         """
         fy = model(x)
         pds = model.partial_derivatives(x)
+        g1 = np.array(self.gradient(fy, y))
+        n = get_n_features(model.parameters[0])
 
         if self.regularization is None:
-            return tuple([np.sum(self.gradient(fy, y) * transpose(partial), axis=-1) for partial in pds])
+            dj_wb = [np.dot(g1.T, partial) for partial in pds]
+            dj_wb[-1] = np.sum(dj_wb[-1], axis=0)
 
-        if self.regularize_intercept:
+        elif self.regularize_intercept:
             r = self.regularization(model.parameters, len(y), lamb).gradient
-            return tuple([np.sum(self.gradient(fy, y) * transpose(partial), axis=-1) + r for partial in pds])
+            dj_wb = [np.dot(g1.T, partial) + r for partial in pds]
+            dj_wb[-1] = np.sum(dj_wb[-1], axis=0)
 
-        dj_wb = [np.sum(self.gradient(fy, y) * transpose(partial), axis=-1) for partial in pds]
-        dj_wb[:-1] += self.regularization(model.parameters[:-1], len(y), lamb).gradient
+        else:
+            dj_wb = [np.dot(g1.T, partial) for partial in pds]
+            #print(dj_wb[-1].shape)
+            #print(dj_wb[-1], np.sum(dj_wb[-1], axis=-1))
+            dj_wb[-1] = np.sum(dj_wb[-1], axis=-1)
+            dj_wb[:-1] += self.regularization(model.parameters[:-1], len(y), lamb).gradient
         return tuple(dj_wb)
 
     def compute_cost(self, fy: ArrayLike, y: ArrayLike) -> float:

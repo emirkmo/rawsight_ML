@@ -1,12 +1,15 @@
 from typing import Callable, Optional, Sequence, Any
 
 from numpy.typing import ArrayLike, NDArray
+
+from utils.cost_functions.cost_functions import regularized_cross_entropy_cost_function
 from utils.models import LogisticModel, Model, LinearModel
 from utils.cost_functions import regularized_logistic_cost_function, CostFunction, regularized_least_squares_cost_function
 from utils.optimizers import regularized_batch_gradient_descent, Optimizer
 from utils import get_n_features
 from utils.scoring import accuracy
 from utils.models.logistic import LogisticMapper, sigmoid
+from utils.models.softmax import softmax, stable_softmax, SoftmaxModel
 from enum import Enum
 import numpy as np
 
@@ -33,13 +36,13 @@ class Regression:
         x, y = self._xy(x, y)
         self.model = self.optimizer(x, y, self.model, self.cost_function, **self.hyperparams)
 
-    def predict(self, x: Optional[NDArray] = None) -> NDArray:
+    def predict(self, x: Optional[NDArray] = None, thresh: bool = False) -> ArrayLike:
         x = self.x if x is None else x
-        return self.model(x)
+        return self.model.predict(x, thresh=thresh)
 
-    def score(self, x: Optional[NDArray] = None, y: Optional[NDArray] = None) -> float:
+    def score(self, x: Optional[NDArray] = None, y: Optional[NDArray] = None, thresh: bool = False) -> float:
         x, y = self._xy(x, y)
-        return accuracy(self.predict(x), y)
+        return accuracy(self.predict(x, thresh=thresh), y)
 
     def cost(self, x: Optional[NDArray] = None, y: Optional[NDArray] = None) -> float:
         x, y = self._xy(x, y)
@@ -98,25 +101,57 @@ class LogisticRegression(Regression):
         self.model.threshold = threshold
 
 
+class SoftmaxRegression(Regression):
+    """Logistic Regression with L2 regularization"""
+
+    def __init__(self, x: Optional[NDArray] = None, y: Optional[NDArray] = None,
+                 w: Optional[ArrayLike] = None, b: Optional[float] = None,
+                 n_features: Optional[int] = None,
+                 learning_rate: float = 0.1, max_iter: int = 10000, regularization_param: float = 0.1,
+                 threshold: float = 0.5, activation_function: LogisticMapper = stable_softmax, **unused_kwargs: Any):
+        if x is None and n_features is None:
+            raise ValueError("Either x or n_features must be provided")
+        self.n_features = n_features if n_features is not None else get_n_features(x)
+        self.w_init = np.zeros(self.n_features) if w is None else w
+        self.b_init = 0 if b is None else b
+        pars_dict = {"w": self.w_init, "b": self.b_init, "n_features": self.n_features, "threshold": threshold,
+                     "activation_function": activation_function}
+        hyperparams = {"learning_rate": learning_rate, "max_iter": max_iter,
+                       "regularization_param": regularization_param}
+        super().__init__(cost_function=regularized_cross_entropy_cost_function, model=SoftmaxModel(**pars_dict),
+                         optimizer=regularized_batch_gradient_descent, hyperparams=hyperparams, x=x, y=y)
+
+    def set_threshold(self, threshold: float) -> None:
+        """Set the threshold for the activation function for logistic regression"""
+        self.model.threshold = threshold
+
+
 class RegressionTypes(Enum):
     linear = "linear"
     logistic = "logistic"
+    softmax = "softmax"
 
     def get_regressor(self, **kwargs: Any) -> Regression:
-        if self.name == "Linear":
+        if self.name == "linear":
             return LinearRegression(**kwargs)
-        elif self.name == "Logistic":
+        elif self.name == "logistic":
             return LogisticRegression(**kwargs)
+        elif self.name == "softmax":
+            kwargs["y"] = kwargs["y"].astype(np.int)
+            kwargs["activation_function"] = stable_softmax
+            return SoftmaxRegression(**kwargs)
 
 
 def run_regression(regression_type: RegressionTypes | str, x: NDArray, y: NDArray, learning_rate: float = 0.1,
-                   max_iter: int = 1000, w: ArrayLike = (0,), b: float = 0, regularization_param: float = 0.1,
+                   max_iter: int = 1000, w: ArrayLike = (0,), b: NDArray | float = 0, regularization_param: float = 0.1,
                    activation_function: LogisticMapper = sigmoid, threshold: float = 0.5,
-                   verbose: bool = True) -> Regression:
+                   verbose: bool = True, fit: bool = True) -> Regression:
     """Run a linear or logistic regression algorithm"""
     regression = RegressionTypes(regression_type).get_regressor(
         x=x, y=y, w=w, b=b, n_features=get_n_features(x), learning_rate=learning_rate, max_iter=max_iter,
         regularization_param=regularization_param, activation_function=activation_function, threshold=threshold)
+    if not fit:
+        return regression
 
     if verbose:
         print(f"Initial cost: {regression.cost()}")
