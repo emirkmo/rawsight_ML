@@ -1,4 +1,5 @@
 [![Python tests](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml/badge.svg)](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml)
+[![Coverage](https://img.shields.io/badge/Coverage-72%25-yellow.svg)]("https://github.com/emirkmo/andrew-ng-ML-course-labs/blob/8f8e36788e43b2c4bc71840ee2320a6bef56806f/README.md")
 # Labs for Stanford ML (Andrew NG's) Machine Learning Course on Coursera
 
 Implemented in Python and following Object-Oriented Design principles,
