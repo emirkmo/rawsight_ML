@@ -31,6 +31,6 @@ jobs:
         if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        python -m pytest --cache-clear --cov=utils /tests > pytest-coverage.txt
+        python -m pytest --cache-clear --cov=utils > pytest-coverage.txt
     - name: Coverage report
       uses: coroo/pytest-coverage-commentator@v1.0.2
