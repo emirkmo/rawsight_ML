@@ -9,8 +9,7 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  contents: read
+permissions: read-all|write-all
 
 jobs:
   build:
@@ -34,6 +33,7 @@ jobs:
       run: |
         python -m pytest --cache-clear --cov=utils | tee pytest-coverage.txt
     - name: Pytest coverage report
-      uses: MishaKav/pytest-coverage-comment@main
+      uses: MishaKav/pytest-coverage-comment@v1.1.32
       with:
         pytest-coverage-path: ./pytest-coverage.txt
+        token: ${{ secrets.GITHUB_TOKEN }}
