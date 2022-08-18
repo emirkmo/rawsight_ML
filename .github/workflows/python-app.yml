@@ -32,7 +32,9 @@ jobs:
         if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        python -m pytest --cache-clear --cov=utils > pytest-coverage.txt
+        python -m pytest --cache-clear --cov=utils | tee pytest-coverage.txt
+      env:
+          JWT_SECRET_KEY: ${{ github.sha }}
     - name: Coverage report
       uses: coroo/pytest-coverage-commentator@v1.0.2
       with:
