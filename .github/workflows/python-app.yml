@@ -26,9 +26,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest numpy sklearn pandas tensorflow
+        pip install pytest numpy sklearn pandas tensorflow pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        python -m pytest
+        python -m pytest --cache-clear --cov=utils /tests > pytest-coverage.txt
+    - name: Coverage report
+      uses: coroo/pytest-coverage-commentator@v1.0.2
