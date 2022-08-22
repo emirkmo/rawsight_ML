@@ -41,10 +41,13 @@ class Dataset:
         """
                 Splits the data into training and testing sets.
                 """
+        if test_size > 1 or test_size < 0:
+            raise ValueError("test_size must be between 0 and 1")
         if test_size == 0:
             self.X_train = self.features.values
             self.y_train = self.target.values
         else:
+            test_size = 1 - test_size
             self.X_train = (self.features.iloc[:int(len(self.features) * test_size)]).values
             self.y_train = (self.target.iloc[:int(len(self.target) * test_size)]).values
 
