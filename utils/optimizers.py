@@ -6,8 +6,14 @@ from typing import Callable
 Optimizer = Callable[[np.ndarray, np.ndarray, Model, CostFunction, ...], Model]
 
 
-def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Model, cost_function: CostFunction,
-                           learning_rate: float, max_iter: int) -> Model:
+def batch_gradient_descent(
+    x: np.ndarray,
+    y: np.ndarray,
+    model: Model,
+    cost_function: CostFunction,
+    learning_rate: float,
+    max_iter: int,
+) -> Model:
     """
     Gradient descent algorithm for linear regression.
     Args:
@@ -38,8 +44,15 @@ def batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Model, cost_func
     return model
 
 
-def regularized_batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Model, cost_function: CostFunction,
-                                       learning_rate: float, max_iter: int, regularization_param: float = 1) -> Model:
+def regularized_batch_gradient_descent(
+    x: np.ndarray,
+    y: np.ndarray,
+    model: Model,
+    cost_function: CostFunction,
+    learning_rate: float,
+    max_iter: int,
+    regularization_param: float = 1,
+) -> Model:
     """
     Gradient descent algorithm for linear regression.
     Args:
@@ -60,7 +73,9 @@ def regularized_batch_gradient_descent(x: np.ndarray, y: np.ndarray, model: Mode
     niter = 0
     while niter < max_iter:
         # compute gradient
-        gradients = cost_function.compute_gradient(x, y, model, lamb=regularization_param)
+        gradients = cost_function.compute_gradient(
+            x, y, model, lamb=regularization_param
+        )
         # update model & parameters
         for i in range(len(parameters)):
             parameters[i] = parameters[i] - learning_rate * gradients[i]

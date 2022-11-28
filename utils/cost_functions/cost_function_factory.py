@@ -7,20 +7,29 @@ from abc import ABC, abstractmethod
 from .regularization import Regularization
 
 NDArrayInt = np.ndarray[Any, np.dtype[int]]
-_CostFunctionCallable = Callable[[ArrayLike, ArrayLike], float] | Callable[[ArrayLike, NDArrayInt], float]
-_CostFunctionGradientCallable = Callable[[ArrayLike, ArrayLike], ArrayLike] | Callable[[ArrayLike, NDArrayInt],
-                                                                                       ArrayLike]
+_CostFunctionCallable = (
+    Callable[[ArrayLike, ArrayLike], float] | Callable[[ArrayLike, NDArrayInt], float]
+)
+_CostFunctionGradientCallable = (
+    Callable[[ArrayLike, ArrayLike], ArrayLike]
+    | Callable[[ArrayLike, NDArrayInt], ArrayLike]
+)
 
 
 class AbstractCostFunction(ABC):
-
     @abstractmethod
-    def __init__(self, cost_function: _CostFunctionCallable, gradient: _CostFunctionGradientCallable,
-                 regularization: Optional[Type[Regularization]] = None):
+    def __init__(
+        self,
+        cost_function: _CostFunctionCallable,
+        gradient: _CostFunctionGradientCallable,
+        regularization: Optional[Type[Regularization]] = None,
+    ):
         raise NotImplementedError("CostFunction is an abstract class")
 
     @abstractmethod
-    def __call__(self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1.) -> ArrayLike:
+    def __call__(
+        self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1.0
+    ) -> ArrayLike:
         raise NotImplementedError("CostFunction is an abstract class")
 
     @abstractmethod
@@ -28,7 +37,9 @@ class AbstractCostFunction(ABC):
         raise NotImplementedError("CostFunction is an abstract class")
 
     @abstractmethod
-    def compute_gradient(self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1.) -> tuple[ArrayLike, ...]:
+    def compute_gradient(
+        self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1.0
+    ) -> tuple[ArrayLike, ...]:
         raise NotImplementedError("CostFunction is an abstract class")
 
 
@@ -47,15 +58,21 @@ class CostFunction(AbstractCostFunction):
     since they can be reduced to the same form.
     """
 
-    def __init__(self, cost_function: _CostFunctionCallable, gradient: _CostFunctionGradientCallable,
-                 regularization: Optional[Type[Regularization]] = None):
+    def __init__(
+        self,
+        cost_function: _CostFunctionCallable,
+        gradient: _CostFunctionGradientCallable,
+        regularization: Optional[Type[Regularization]] = None,
+    ):
         self.cost_function = cost_function
         self.gradient = gradient
         self.regularization = regularization
         self.regularize_intercept = False  # by convention intercept is not regularized,
         # we skip last element of gradient assuming it to be the intercept unless this is `True.`
 
-    def compute_gradient(self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1.) -> tuple[ArrayLike, ...]:
+    def compute_gradient(
+        self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1.0
+    ) -> tuple[ArrayLike, ...]:
         """
         Computes the partial derivative of the cost function with respect to the model parameters.
 
@@ -87,10 +104,12 @@ class CostFunction(AbstractCostFunction):
 
         else:
             dj_wb = [np.dot(g1.T, partial) for partial in pds]
-            #print(dj_wb[-1].shape)
-            #print(dj_wb[-1], np.sum(dj_wb[-1], axis=-1))
+            # print(dj_wb[-1].shape)
+            # print(dj_wb[-1], np.sum(dj_wb[-1], axis=-1))
             dj_wb[-1] = np.sum(dj_wb[-1], axis=-1)
-            dj_wb[:-1] += self.regularization(model.parameters[:-1], len(y), lamb).gradient
+            dj_wb[:-1] += self.regularization(
+                model.parameters[:-1], len(y), lamb
+            ).gradient
         return tuple(dj_wb)
 
     def compute_cost(self, fy: ArrayLike, y: ArrayLike) -> float:
@@ -106,7 +125,9 @@ class CostFunction(AbstractCostFunction):
         """
         return self.cost_function(fy, y)
 
-    def __call__(self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1) -> float:
+    def __call__(
+        self, x: NDArray, y: ArrayLike, model: Model, lamb: float = 1
+    ) -> float:
         """
         Computes the cost function.
 

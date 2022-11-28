@@ -10,6 +10,7 @@ from utils.models.model import BaseLinearModel, BaseNeuralNetLinearModel
 
 class Activation(Enum):
     """Enum for activation functions."""
+
     linear = "linear"
     sigmoid = "sigmoid"
 
@@ -73,7 +74,9 @@ class DenseLayer:
         self.init_model()
 
     def init_model(self) -> None:
-        self.model = self.activation.get_function()(self.w, self.b, n_features=self.input_dim)
+        self.model = self.activation.get_function()(
+            self.w, self.b, n_features=self.input_dim
+        )
 
     def initialize_params(self) -> None:
         """Initialize the weights and biases."""
@@ -105,7 +108,6 @@ def test_dense_layer(layer: Layer):
     print(y)
 
 
-if __name__=='__main__':
+if __name__ == "__main__":
     layer = DenseLayer(neurons=2, input_dim=3, activation="sigmoid", name="test")
     test_dense_layer(layer)
-

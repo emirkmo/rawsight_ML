@@ -7,7 +7,7 @@ from utils.cost_functions import NDArrayInt
 from utils.models.logistic import LogisticModel, LogisticMapper, LogisticNNModel
 
 
-#from .model import BaseLinearModel, BaseNeuralNetLinearModel, Model
+# from .model import BaseLinearModel, BaseNeuralNetLinearModel, Model
 
 
 def softmax(x: NDArray) -> NDArray:
@@ -25,11 +25,21 @@ def stable_softmax(x: NDArray) -> NDArray:
 
 
 class SoftmaxModel(LogisticNNModel):
-
-    def __init__(self, w: NDArray, b: NDArray, n_features: int = 1,
-                 activation_function: LogisticMapper = stable_softmax, threshold: float = 0.5):
-        super().__init__(w=w, b=b, n_features=n_features, activation_function=activation_function,
-                         threshold=threshold)
+    def __init__(
+        self,
+        w: NDArray,
+        b: NDArray,
+        n_features: int = 1,
+        activation_function: LogisticMapper = stable_softmax,
+        threshold: float = 0.5,
+    ):
+        super().__init__(
+            w=w,
+            b=b,
+            n_features=n_features,
+            activation_function=activation_function,
+            threshold=threshold,
+        )
 
     def partial_derivatives(self, x: NDArray):
         return self.dw(x), self.db()
@@ -41,8 +51,7 @@ class SoftmaxModel(LogisticNNModel):
         return np.argmax(fy, axis=-1)
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     x = np.array([[1, 2, 3, 6], [4, 5, 6, 7], [7, 8, 9, 10]])
     print(x.shape)
     print(softmax(x))
@@ -52,21 +61,22 @@ if __name__ == '__main__':
 
     dataset_1 = {
         "X_tmp": np.array([[0.5, 1.5], [1, 1], [1.5, 0.5], [3, 0.5], [2, 2], [1, 2.5]]),
-        "y_tmp": np.array([0., 0., 0., 1., 1., 1.]),
+        "y_tmp": np.array([0.0, 0.0, 0.0, 1.0, 1.0, 1.0]),
         "w_tmp": np.ones((2, 2)),
-        "b_tmp": np.array([-1., -1.]),
-        "lambda_tmp": 0.7
+        "b_tmp": np.array([-1.0, -1.0]),
+        "lambda_tmp": 0.7,
     }
 
-    x = dataset_1['X_tmp']
-    y = dataset_1['y_tmp'].astype(int)
-    w = dataset_1['w_tmp']
-    b = dataset_1['b_tmp']
+    x = dataset_1["X_tmp"]
+    y = dataset_1["y_tmp"].astype(int)
+    w = dataset_1["w_tmp"]
+    b = dataset_1["b_tmp"]
 
-    s = SoftmaxModel(w=np.array([[-0.95079089, 0.57670977], [-0.95079089, 0.57670977]]),
-                     b=np.array([1.15495607,-3.15495607]), n_features=2)
-
-
+    s = SoftmaxModel(
+        w=np.array([[-0.95079089, 0.57670977], [-0.95079089, 0.57670977]]),
+        b=np.array([1.15495607, -3.15495607]),
+        n_features=2,
+    )
 
     # x2 = np.array([[1, 2, 3, 6]])
     # print(x2.shape)
