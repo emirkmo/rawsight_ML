@@ -2,18 +2,18 @@ from typing import Callable, Optional, Sequence, Any
 
 from numpy.typing import ArrayLike, NDArray
 
-from utils.cost_functions.cost_functions import regularized_cross_entropy_cost_function
-from utils.models import LogisticModel, Model, LinearModel
-from utils.cost_functions import (
+from rawsight.cost_functions.cost_functions import regularized_cross_entropy_cost_function
+from rawsight.models import LogisticModel, Model, LinearModel
+from rawsight.cost_functions import (
     regularized_logistic_cost_function,
     CostFunction,
     regularized_least_squares_cost_function,
 )
-from utils.optimizers import regularized_batch_gradient_descent, Optimizer
-from utils import get_n_features
-from utils.scoring import accuracy
-from utils.models.logistic import LogisticMapper, sigmoid
-from utils.models.softmax import softmax, stable_softmax, SoftmaxModel
+from rawsight.optimizers import regularized_batch_gradient_descent, Optimizer
+from rawsight import get_n_features
+from rawsight.scoring import accuracy
+from rawsight.models.logistic import LogisticMapper, sigmoid
+from rawsight.models.softmax import softmax, stable_softmax, SoftmaxModel
 from enum import Enum
 import numpy as np
 

@@ -1,5 +1,5 @@
-from utils.input_validation import get_n_features, get_n_classes
-from utils.models import Model
+from rawsight.input_validation import get_n_features, get_n_classes
+from rawsight.models import Model
 from typing import Callable, Optional, Type, Any
 import numpy as np
 from numpy.typing import ArrayLike, NDArray

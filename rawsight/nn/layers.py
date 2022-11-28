@@ -1,11 +1,11 @@
 """Class for Dense layer in a neural network."""
 from typing import Optional, Protocol
 from numpy.typing import ArrayLike, NDArray
-from utils.models.logistic import LogisticNNModel
-from utils.models.linear import LinearNNModel
+from rawsight.models.logistic import LogisticNNModel
+from rawsight.models.linear import LinearNNModel
 from enum import Enum
 import numpy as np
-from utils.models.model import BaseLinearModel, BaseNeuralNetLinearModel
+from rawsight.models.model import BaseLinearModel, BaseNeuralNetLinearModel
 
 
 class Activation(Enum):

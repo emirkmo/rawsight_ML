@@ -3,8 +3,8 @@ from typing import Optional
 import numpy as np
 from numpy.typing import NDArray, ArrayLike
 
-from utils.cost_functions import NDArrayInt
-from utils.models.logistic import LogisticModel, LogisticMapper, LogisticNNModel
+from rawsight.cost_functions import NDArrayInt
+from rawsight.models.logistic import LogisticModel, LogisticMapper, LogisticNNModel
 
 
 # from .model import BaseLinearModel, BaseNeuralNetLinearModel, Model

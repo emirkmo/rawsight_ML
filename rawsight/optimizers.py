@@ -1,7 +1,10 @@
-import numpy as np
-from utils import Model, CostFunction
 from typing import Callable
 
+import numpy as np
+
+from rawsight import CostFunction, Model
+
+__all__ = ["batch_gradient_descent", "regularized_batch_gradient_descent", "Optimizer"]
 
 Optimizer = Callable[[np.ndarray, np.ndarray, Model, CostFunction, ...], Model]
 

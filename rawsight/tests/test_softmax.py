@@ -1,5 +1,5 @@
-from utils.models.softmax import softmax, stable_softmax
-from utils.regression import run_regression
+from rawsight.models.softmax import softmax, stable_softmax
+from rawsight.regression import run_regression
 import numpy as np
 import pytest
 

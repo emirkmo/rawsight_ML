@@ -2,8 +2,8 @@ from typing import Optional
 
 from .layers import DenseLayer, Layer
 import numpy as np
-from utils.cost_functions import CostFunction
-from utils.optimizers import Optimizer
+from rawsight.cost_functions import CostFunction
+from rawsight.optimizers import Optimizer
 
 
 class Sequential:

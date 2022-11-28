@@ -3,7 +3,7 @@ from numpy.typing import ArrayLike
 
 from datasets import load_coffee_data
 import numpy as np
-from utils.nn.layers import DenseLayer
+from rawsight.nn.layers import DenseLayer
 
 data = load_coffee_data()
 data.normalize_features()

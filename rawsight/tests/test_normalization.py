@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from datasets import load_housing_data
-from utils import ZScoreNorm, MaxNorm, MeanNorm
+from rawsight import ZScoreNorm, MaxNorm, MeanNorm
 from sklearn.preprocessing import StandardScaler
 
 

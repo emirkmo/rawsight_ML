@@ -1,5 +1,5 @@
 import numpy as np
-from utils import LinearModel, least_squares_cost_function, batch_gradient_descent
+from rawsight import LinearModel, least_squares_cost_function, batch_gradient_descent
 
 
 def main():

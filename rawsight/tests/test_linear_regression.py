@@ -3,11 +3,11 @@ import numpy as np
 from datasets import load_housing_data, Dataset
 from typing import Callable
 from sklearn.linear_model import SGDRegressor
-from utils.cost_functions import least_squares_cost_function
-from utils.cost_functions.cost_functions import _least_squares_cost
-from utils.optimizers import batch_gradient_descent, regularized_batch_gradient_descent
-from utils.models import LinearModel, Model
-from utils.regression import run_regression
+from rawsight.cost_functions import least_squares_cost_function
+from rawsight.cost_functions.cost_functions import _least_squares_cost
+from rawsight.optimizers import batch_gradient_descent, regularized_batch_gradient_descent
+from rawsight.models import LinearModel, Model
+from rawsight.regression import run_regression
 from functools import partial
 import pytest
 
@@ -92,7 +92,7 @@ def test_regularized_better(
 def test_parity_to_tensorflow():
     import tensorflow as tf
     from datasets import load_tumor_simple
-    from utils.regression import LinearRegression
+    from rawsight.regression import LinearRegression
 
     dataset = load_tumor_simple()
 

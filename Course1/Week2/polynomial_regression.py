@@ -1,7 +1,7 @@
-from utils.models import LinearModel, add_poly_features
-from utils.optimizers import batch_gradient_descent
-from utils import least_squares_cost_function
-from utils.normalization import ZScoreNorm
+from rawsight.models import LinearModel, add_poly_features
+from rawsight.optimizers import batch_gradient_descent
+from rawsight import least_squares_cost_function
+from rawsight.normalization import ZScoreNorm
 import numpy as np
 import matplotlib.pyplot as plt
 

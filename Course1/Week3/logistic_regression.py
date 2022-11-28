@@ -1,8 +1,8 @@
 from numpy.typing import ArrayLike, NDArray
-from utils.models import LogisticModel, Model
-from utils.cost_functions import logistic_cost_function, CostFunction
-from utils.optimizers import batch_gradient_descent
-from utils import get_n_features
+from rawsight.models import LogisticModel, Model
+from rawsight.cost_functions import logistic_cost_function, CostFunction
+from rawsight.optimizers import batch_gradient_descent
+from rawsight import get_n_features
 import numpy as np
 
 

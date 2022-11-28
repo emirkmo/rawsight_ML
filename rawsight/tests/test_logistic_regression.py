@@ -1,13 +1,13 @@
 """Logistic regression tests.
 TODO: Change tests to use the new LogisticRegression class and run_regression function.
 """
-from utils.cost_functions import (
+from rawsight.cost_functions import (
     regularized_logistic_cost_function,
     logistic_cost_function,
 )
-from utils.models import LogisticModel
-from utils.input_validation import get_n_features
-from utils.regression import run_regression, LogisticRegression as MyLogisticRegression
+from rawsight.models import LogisticModel
+from rawsight.input_validation import get_n_features
+from rawsight.regression import run_regression, LogisticRegression as MyLogisticRegression
 
 # from Course1.Week3.logistic_regression import run_logistic_regression
 import numpy as np
@@ -132,7 +132,7 @@ def test_logistic_regression_against_sklearn(regularized_logistic_regression):
 def test_logistic_regression_against_tensorflow():
     import tensorflow as tf
     from datasets import load_tumor_simple
-    from utils.regression import LogisticRegression
+    from rawsight.regression import LogisticRegression
 
     dataset = load_tumor_simple()
 
