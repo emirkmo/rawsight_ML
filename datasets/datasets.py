@@ -143,6 +143,15 @@ def _gen_data(m: int, seed: int = 2, scale: float = 0.7):
     return x_train, y_train, x_ideal, y_ideal
 
 
+def load_mnist(subset: bool = True) -> Dataset:
+    # def load_data():
+    X = np.load("X.npy")
+    y = np.load("y.npy")
+    df = pd.DataFrame({"X": X, "y": y})
+    dataset = Dataset(name="MNIST", df=df, target_name="y")
+    return dataset
+
+
 def load_course2_week3_data() -> Dataset:
     x_train, y_train, x_ideal, y_ideal = _gen_data(40, 5, 0.7)
     df = pd.DataFrame({"X": x_train, "y": y_train})

@@ -51,6 +51,12 @@ def _cross_entropy_cost_gradient(fy: NDArray, y: NDArrayInt) -> ArrayLike:
     p[range(y.shape[0]), y] -= 1
     return p/y.shape[0]
 
+
+def categorial_cost(fy: NDArray, y: NDArrayInt) -> float:
+    """ Simply the fraction of incorrect predictions.
+    """
+    return np.sum(y != fy)/len(y)
+
 # def _cross_entropy_loss(fy: NDArray, y: NDArrayInt) -> NDArray:
 #     """ Simple negative log cost function for LogisticModel, vectorized form.
 #     """
