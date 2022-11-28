@@ -1,9 +1,12 @@
-from rawsight.input_validation import get_n_features, get_n_classes
-from rawsight.models import Model
-from typing import Callable, Optional, Type, Any
+from abc import ABC, abstractmethod
+from typing import Any, Callable, Optional, Type
+
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
-from abc import ABC, abstractmethod
+
+from rawsight.input_validation import get_n_classes, get_n_features
+from rawsight.models import Model
+
 from .regularization import Regularization
 
 NDArrayInt = np.ndarray[Any, np.dtype[int]]

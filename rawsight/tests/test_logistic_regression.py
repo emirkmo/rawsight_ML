@@ -7,7 +7,10 @@ from rawsight.cost_functions import (
 )
 from rawsight.models import LogisticModel
 from rawsight.input_validation import get_n_features
-from rawsight.regression import run_regression, LogisticRegression as MyLogisticRegression
+from rawsight.regression import (
+    run_regression,
+    LogisticRegression as MyLogisticRegression,
+)
 
 # from Course1.Week3.logistic_regression import run_logistic_regression
 import numpy as np

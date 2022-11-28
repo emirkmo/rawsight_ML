@@ -5,7 +5,10 @@ from typing import Callable
 from sklearn.linear_model import SGDRegressor
 from rawsight.cost_functions import least_squares_cost_function
 from rawsight.cost_functions.cost_functions import _least_squares_cost
-from rawsight.optimizers import batch_gradient_descent, regularized_batch_gradient_descent
+from rawsight.optimizers import (
+    batch_gradient_descent,
+    regularized_batch_gradient_descent,
+)
 from rawsight.models import LinearModel, Model
 from rawsight.regression import run_regression
 from functools import partial

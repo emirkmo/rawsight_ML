@@ -2,7 +2,9 @@ from typing import Callable, Optional, Sequence, Any
 
 from numpy.typing import ArrayLike, NDArray
 
-from rawsight.cost_functions.cost_functions import regularized_cross_entropy_cost_function
+from rawsight.cost_functions.cost_functions import (
+    regularized_cross_entropy_cost_function,
+)
 from rawsight.models import LogisticModel, Model, LinearModel
 from rawsight.cost_functions import (
     regularized_logistic_cost_function,
