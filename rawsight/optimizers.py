@@ -101,7 +101,7 @@ def adam(
     regularization_param: float = 0,  # so-called l2 weight decay.
 ) -> Model:
     """
-    Adam algorithm.
+    Adam algorithm. Basically uses adaptive learning rates for each parameter based on gradient moments.
     Args:
         x (ndarray (m,)): Data, m examples
         y (ndarray (m,)): target values
