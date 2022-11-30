@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from utils import least_squares_cost_function
+from rawsight import least_squares_cost_function
 from datasets import Dataset
-from utils.models import LinearModel
-from utils.optimizers import batch_gradient_descent
+from rawsight.models import LinearModel
+from rawsight.optimizers import batch_gradient_descent
 
 
 def run(housing_dataset: Dataset, learning_rate: float = 0.1):

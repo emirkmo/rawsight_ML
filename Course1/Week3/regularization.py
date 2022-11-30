@@ -1,10 +1,10 @@
 from datasets import load_housing_data
-from utils import LinearModel
-from utils.cost_functions import regularized_logistic_cost_function, regularized_least_squares_cost_function
+from rawsight import LinearModel
+from rawsight.cost_functions import regularized_logistic_cost_function, regularized_least_squares_cost_function
 import numpy as np
 from sklearn.linear_model import LogisticRegression, SGDRegressor
 from logistic_regression import run_logistic_regression
-from utils.optimizers import regularized_batch_gradient_descent
+from rawsight.optimizers import regularized_batch_gradient_descent
 np.random.seed(1)
 X = np.array([[0.5, 1.5], [1, 1], [1.5, 0.5], [3, 0.5], [2, 2], [1, 2.5]])
 y = np.array([0., 0., 0., 1., 1., 1.])

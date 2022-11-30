@@ -4,7 +4,6 @@ import numpy as np
 
 
 class Model(Protocol):
-
     def __init__(self):
         ...
 
@@ -34,9 +33,16 @@ class Model(Protocol):
 
 
 class BaseLinearModel:
-
-    def __init__(self, w: ArrayLike = (1,), b: ArrayLike | float = 0, n_features: int = 1,
-                 threshold: Optional[float] = None, verify_inputs: bool = True, verify_params: bool = True, **kwargs):
+    def __init__(
+        self,
+        w: ArrayLike = (1,),
+        b: ArrayLike | float = 0,
+        n_features: int = 1,
+        threshold: Optional[float] = None,
+        verify_inputs: bool = True,
+        verify_params: bool = True,
+        **kwargs,
+    ):
         """
         BaseLinearModel is a mixin class for Linear, Polynomial, and Logistic Regression.
         w should have the same length as n_features, will be automatically done if w has length 1
@@ -56,7 +62,7 @@ class BaseLinearModel:
 
     @staticmethod
     def verify_w(w: ArrayLike, n: int) -> list[float]:
-        """ Shape of w must be n * 1 or 1 * n where n is
+        """Shape of w must be n * 1 or 1 * n where n is
         number of features. Return w as a stack (list) for
         easier appending of features.
         Args:
@@ -66,7 +72,7 @@ class BaseLinearModel:
         Returns:
             list: list of weights
         """
-        if getattr(w, '__iter__', None) is None:
+        if getattr(w, "__iter__", None) is None:
             w = np.atleast_1d(w)
         if n < 1 or not np.isfinite(n):
             raise ValueError("n_features must be positive definite and atleast 1.")
@@ -92,12 +98,16 @@ class BaseLinearModel:
         the number of features."""
         x = np.array(x)
         if not self._verify_input_dimension(x):
-            raise ValueError(f"x must be m * n, but was was {x.shape}."
-                             f" n is number of features and is currently: {self.n}.")
+            raise ValueError(
+                f"x must be m * n, but was was {x.shape}."
+                f" n is number of features and is currently: {self.n}."
+            )
         return x
 
     def evaluate(self, x: NDArray) -> ArrayLike | float:
-        raise NotImplementedError("evaluate must be implemented in main model class, not this mixin.")
+        raise NotImplementedError(
+            "evaluate must be implemented in main model class, not this mixin."
+        )
 
     @staticmethod
     def dw(x: NDArray):
@@ -107,7 +117,7 @@ class BaseLinearModel:
     @staticmethod
     def db(x: Optional[NDArray] = None):
         """partial derivative with respect to b"""
-        return 1.
+        return 1.0
 
     @property
     def parameters(self):
@@ -137,9 +147,14 @@ class BaseLinearModel:
 
 
 class BaseNeuralNetLinearModel:
-
-    def __init__(self, w: NDArray, b: NDArray, n_features: int = 1,
-                 threshold: Optional[float] = None, **kwargs):
+    def __init__(
+        self,
+        w: NDArray,
+        b: NDArray,
+        n_features: int = 1,
+        threshold: Optional[float] = None,
+        **kwargs,
+    ):
         """
         BaseLinearModel is a mixin class for Linear, Polynomial, and Logistic Regression.
         w should have the same length as n_features, will be automatically done if w has length 1
@@ -156,7 +171,9 @@ class BaseNeuralNetLinearModel:
         self.threshold = threshold
 
     def evaluate(self, x: NDArray) -> ArrayLike | float:
-        raise NotImplementedError("evaluate must be implemented in main model class, not this mixin.")
+        raise NotImplementedError(
+            "evaluate must be implemented in main model class, not this mixin."
+        )
 
     @staticmethod
     def dw(x: NDArray):
@@ -166,7 +183,7 @@ class BaseNeuralNetLinearModel:
     @staticmethod
     def db(x: Optional[NDArray] = None):
         """partial derivative with respect to b"""
-        return 1.
+        return 1.0
 
     @property
     def parameters(self):

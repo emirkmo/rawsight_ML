@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from datasets import load_housing_data
-from utils import ZScoreNorm, MaxNorm, MeanNorm
+from rawsight import ZScoreNorm, MaxNorm, MeanNorm
 from sklearn.preprocessing import StandardScaler
 
 
@@ -12,7 +12,7 @@ def housing_data():
 
 def test_housing_dataset_init(housing_data):
     # test inititalization
-    p2p_init = np.array([2.406e+03, 4.000e+00, 1.000e+00, 9.500e+01])
+    p2p_init = np.array([2.406e03, 4.000e00, 1.000e00, 9.500e01])
     assert np.ptp(housing_data.X_train, axis=0) == pytest.approx(p2p_init, abs=1e-2)
 
 
@@ -43,19 +43,19 @@ def test_maxnorm():
     assert a_norm == pytest.approx(np.array([0.5, 1.0, 0.5]))
     assert np.max(a_norm, axis=0) == pytest.approx(1.0)
     assert np.max(a, axis=0) > np.max(a_norm, axis=0)
-    assert normalizer.norm['max'] == np.max(a, axis=0)
+    assert normalizer.norm["max"] == np.max(a, axis=0)
 
 
 def test_meannorm():
     a = np.array([1.0, 2.0, 1.0])
     normalizer = MeanNorm()
     a_norm = normalizer.normalize(a)
-    assert normalizer.norm['mean'] == np.mean(a, axis=0)
-    assert normalizer.norm['data_range'] == np.max(a, axis=0) - np.min(a, axis=0)
-    assert np.mean(normalizer.norm['data_range'] * a_norm, axis=0) == pytest.approx(0)
+    assert normalizer.norm["mean"] == np.mean(a, axis=0)
+    assert normalizer.norm["data_range"] == np.max(a, axis=0) - np.min(a, axis=0)
+    assert np.mean(normalizer.norm["data_range"] * a_norm, axis=0) == pytest.approx(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_housing_dataset_init()
     test_zscorenorm_vs_sklearn()
     test_round_trip()

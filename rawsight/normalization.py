@@ -50,7 +50,7 @@ class ZScoreNorm:
     def normalize(self, x: np.ndarray) -> np.ndarray:
         mean = x.mean(axis=0)
         std = x.std(axis=0, ddof=0)
-        self._norm_pars['mean'], self._norm_pars['std'] = mean, std
+        self._norm_pars["mean"], self._norm_pars["std"] = mean, std
         return self._norm_function(x, mean, std)
 
     @property
@@ -61,7 +61,7 @@ class ZScoreNorm:
         """Inverse normalization."""
         if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
-        return x * self.norm['std'] + self.norm['mean']
+        return x * self.norm["std"] + self.norm["mean"]
 
     def __repr__(self):
         return f"ZScoreNorm() with parameters: {self.norm}"
@@ -69,13 +69,13 @@ class ZScoreNorm:
     def apply_norm(self, x: np.ndarray) -> np.ndarray:
         if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
-        return self._norm_function(x, self.norm['mean'], self.norm['std'])
+        return self._norm_function(x, self.norm["mean"], self.norm["std"])
 
 
 class MaxNorm:
     """Max normalization: divide by
-     the maximum value of the data. The normalization
-     parameters are stored in the `norm` dictionary."""
+    the maximum value of the data. The normalization
+    parameters are stored in the `norm` dictionary."""
 
     def __init__(self):
         self._norm_pars = {"max": None}
@@ -90,7 +90,7 @@ class MaxNorm:
 
     def normalize(self, x: np.ndarray) -> np.ndarray:
         max = x.max(axis=0)
-        self._norm_pars['max'] = max
+        self._norm_pars["max"] = max
         return self._norm_function(x, max)
 
     @property
@@ -101,7 +101,7 @@ class MaxNorm:
         """Inverse normalization."""
         if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
-        return x * self.norm['max']
+        return x * self.norm["max"]
 
     def __repr__(self):
         return f"MaxNorm() with parameters: {self.norm}"
@@ -109,7 +109,7 @@ class MaxNorm:
     def apply_norm(self, x: np.ndarray) -> np.ndarray:
         if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
-        return self._norm_function(x, self.norm['max'])
+        return self._norm_function(x, self.norm["max"])
 
 
 class MeanNorm:
@@ -124,15 +124,17 @@ class MeanNorm:
         return self.normalize(x)
 
     @staticmethod
-    def _norm_function(x: np.ndarray, mean: ArrayLike, data_range: ArrayLike) -> np.ndarray:
+    def _norm_function(
+        x: np.ndarray, mean: ArrayLike, data_range: ArrayLike
+    ) -> np.ndarray:
         """Normalization function."""
         return (x - mean) / data_range
 
     def normalize(self, x: np.ndarray) -> np.ndarray:
         mean = x.mean(axis=0)
         data_range = x.max(axis=0) - x.min(axis=0)
-        self._norm_pars['mean'] = mean
-        self._norm_pars['data_range'] = data_range
+        self._norm_pars["mean"] = mean
+        self._norm_pars["data_range"] = data_range
         return self._norm_function(x, mean, data_range)
 
     @property
@@ -143,7 +145,7 @@ class MeanNorm:
         """Inverse normalization."""
         if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
-        return x * self.norm['data_range'] + self.norm['mean']
+        return x * self.norm["data_range"] + self.norm["mean"]
 
     def __repr__(self):
         return f"MeanNorm() with parameters: {self.norm}"
@@ -151,4 +153,4 @@ class MeanNorm:
     def apply_norm(self, x: np.ndarray) -> np.ndarray:
         if list(self.norm.values())[0] is None:
             raise ValueError("Normalization parameters are not set.")
-        return self._norm_function(x, self.norm['mean'], self.norm['data_range'])
+        return self._norm_function(x, self.norm["mean"], self.norm["data_range"])

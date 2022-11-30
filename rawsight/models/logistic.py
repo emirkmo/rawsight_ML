@@ -12,10 +12,16 @@ def sigmoid(x: ArrayLike) -> ArrayLike:
 
 
 class LogisticModel(BaseLinearModel):
-
-    def __init__(self, w: ArrayLike = (1,), b: ArrayLike | float = 0,
-                 n_features: int = 1, verify_inputs: bool = True, verify_params: bool = True,
-                 activation_function: LogisticMapper = sigmoid, threshold: float = 0.5):
+    def __init__(
+        self,
+        w: ArrayLike = (1,),
+        b: ArrayLike | float = 0,
+        n_features: int = 1,
+        verify_inputs: bool = True,
+        verify_params: bool = True,
+        activation_function: LogisticMapper = sigmoid,
+        threshold: float = 0.5,
+    ):
         """w should have the same length as n_features.
         Will be automatically done if w has length 1 else will raise.
         verify_inputs will coerce x and raise if x has wrong shape,
@@ -24,8 +30,13 @@ class LogisticModel(BaseLinearModel):
         """
         self.activation_function = activation_function
         self.threshold = threshold
-        super().__init__(w=w, b=b, n_features=n_features, verify_inputs=verify_inputs,
-                         verify_params=verify_params)
+        super().__init__(
+            w=w,
+            b=b,
+            n_features=n_features,
+            verify_inputs=verify_inputs,
+            verify_params=verify_params,
+        )
 
     def evaluate(self, x: NDArray) -> NDArray | float:
         """x is array of input X, where its shape must be m * n where n is
@@ -39,9 +50,14 @@ class LogisticModel(BaseLinearModel):
 
 
 class LogisticNNModel(BaseNeuralNetLinearModel):
-
-    def __init__(self, w: NDArray, b: NDArray, n_features: int = 1,
-                 activation_function: LogisticMapper = sigmoid, threshold: float = 0.5):
+    def __init__(
+        self,
+        w: NDArray,
+        b: NDArray,
+        n_features: int = 1,
+        activation_function: LogisticMapper = sigmoid,
+        threshold: float = 0.5,
+    ):
         """w should have the same length as n_features.
         Will be automatically done if w has length 1 else will raise.
         verify_inputs will coerce x and raise if x has wrong shape,

@@ -15,4 +15,4 @@ def add_poly_features(x: ArrayLike, degrees: int = 1):
         raise ValueError("degrees must be positive definite and atleast 1.")
     if degrees == 1:
         return x
-    return np.hstack([x ** i for i in range(1, degrees + 1)])
+    return np.hstack([x**i for i in range(1, degrees + 1)])

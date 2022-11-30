@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
 
-from utils.input_validation import get_n_features
-from utils.normalization import NormalizerProtocol, ZScoreNorm
+from rawsight.input_validation import get_n_features
+from rawsight.normalization import NormalizerProtocol, ZScoreNorm
 
 DATA_PATH = Path(__file__).parent
 

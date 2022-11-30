@@ -4,7 +4,7 @@ we have parity with tensorflow for my implementation of Linear and Logistic Regr
 """
 import tensorflow as tf
 from datasets import load_tumor_simple
-from utils.regression import LinearRegression, LogisticRegression
+from rawsight.regression import LinearRegression, LogisticRegression
 
 
 def main():

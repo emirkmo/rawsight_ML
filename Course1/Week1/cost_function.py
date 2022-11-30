@@ -1,5 +1,5 @@
-from utils.models import LinearModel
-from utils.cost_functions import least_squares_cost_function
+from rawsight.models import LinearModel
+from rawsight.cost_functions import least_squares_cost_function
 import numpy as np
 
 

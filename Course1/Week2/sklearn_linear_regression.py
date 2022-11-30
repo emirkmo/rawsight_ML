@@ -1,11 +1,11 @@
 import numpy as np
 from datasets import Dataset, load_housing_data
-from utils import ZScoreNorm
+from rawsight import ZScoreNorm
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import SGDRegressor
-from utils.cost_functions import least_squares_cost_function, regularized_least_squares_cost_function
-from utils.optimizers import batch_gradient_descent, regularized_batch_gradient_descent
-from utils.models import LinearModel
+from rawsight.cost_functions import least_squares_cost_function, regularized_least_squares_cost_function
+from rawsight.optimizers import batch_gradient_descent, regularized_batch_gradient_descent
+from rawsight.models import LinearModel
 
 np.random.seed(1)
 
