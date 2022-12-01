@@ -1,5 +1,5 @@
 import numpy as np
-from datasets import Dataset, load_housing_data
+from rawsight.datasets import Dataset, load_housing_data
 from rawsight import ZScoreNorm
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import SGDRegressor

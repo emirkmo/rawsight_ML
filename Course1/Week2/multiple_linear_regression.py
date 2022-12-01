@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from rawsight import least_squares_cost_function
-from datasets import Dataset
+from rawsight.datasets import Dataset
 from rawsight.models import LinearModel
 from rawsight.optimizers import batch_gradient_descent
 
