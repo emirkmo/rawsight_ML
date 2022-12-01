@@ -48,3 +48,4 @@ jobs:
       with:
         message: Update coverage on Readme [skip ci]
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: master
