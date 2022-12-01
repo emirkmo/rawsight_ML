@@ -33,8 +33,18 @@ jobs:
       run: |
         python -m pytest rawsight --cache-clear --cov=rawsight | tee pytest-coverage.txt
     - name: Pytest coverage report
+      id: coverageComment
       uses: MishaKav/pytest-coverage-comment@v1.1.39
       with:
         pytest-coverage-path: ./pytest-coverage.txt
         github-token: ${{ secrets.GITHUB_TOKEN }}
         default-branch: master
+    - name: create dynamic badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 092a8fbf51f22d7ccf5fc01059f5d5d4
+        filename: rawsight_badge.json
+        label: ${{ steps.coverageComment.outputs.coverage }}
+        color: ${{ steps.coverageComment.outputs.color }}
+        namedLogo: python
