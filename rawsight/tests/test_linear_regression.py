@@ -1,6 +1,6 @@
 import numpy as np
 
-from datasets import load_housing_data, Dataset
+from rawsight.datasets import load_housing_data, Dataset
 from typing import Callable
 from sklearn.linear_model import SGDRegressor
 from rawsight.cost_functions import least_squares_cost_function
@@ -94,7 +94,7 @@ def test_regularized_better(
 
 def test_parity_to_tensorflow():
     import tensorflow as tf
-    from datasets import load_tumor_simple
+    from rawsight.datasets import load_tumor_simple
     from rawsight.regression import LinearRegression
 
     dataset = load_tumor_simple()

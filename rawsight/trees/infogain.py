@@ -1,33 +1,81 @@
+import types
+from typing import Any, Protocol, runtime_checkable
+
 import numpy as np
 
-from rawsight.cost_functions import NDArrayInt, binary_entropy_cost
+from ..cost_functions import NDArrayInt
+from ._splitter_protocol import Splitter
+from .tree import ChildNodes, TreeIndices
 
-from .splitting import binary_split
+
+class InfoGainType(Protocol):
+    def __call__(self, y_node: NDArrayInt, leafs: tuple[NDArrayInt, ...]) -> float:
+        ...
 
 
-def _calc_binary_info_weights(
-    y_node: NDArrayInt | list[int], y_part: NDArrayInt | list[int]
+def calc_info_gain(
+    data: np.ndarray,
+    y: NDArrayInt,
+    node_indices: TreeIndices,
+    feature: int,
+    splitter: Splitter,
+    info_gainer: InfoGainType,
+    **kwargs: Any
 ) -> float:
-    w_part = len(y_part) / len(y_node)
-    return w_part
+    y_node: NDArrayInt = y[node_indices]
+
+    # split node into n leafs, as determined by the splitter.
+    split_indices: ChildNodes = splitter(data, node_indices, feature, **kwargs)
+    leafs: tuple[NDArrayInt, ...] = tuple(y[ind] for ind in split_indices)
+
+    return info_gainer(y_node, leafs)
 
 
-def info_gain(y_node: NDArrayInt, y_left: NDArrayInt, y_right: NDArrayInt) -> float:
-    w_left = _calc_binary_info_weights(y_node, y_left)
-    w_right = _calc_binary_info_weights(y_node, y_right)
+@runtime_checkable
+class InfoGain(Protocol):
+    splitter: Splitter
+    info_gainer: InfoGainType
 
-    h_root = binary_entropy_cost(y_node)
-    h_left, h_right = binary_entropy_cost(y_left), binary_entropy_cost(y_right)
+    def __call__(
+        self,
+        data: np.ndarray,
+        y: NDArrayInt,
+        node_indices: TreeIndices,
+        feature: int,
+        **kwargs: Any
+    ) -> float:
+        raise NotImplementedError("InfoGain is an abstract class.")
 
-    info_gain = h_root - (w_left * h_left + w_right * h_right)
-    return info_gain
+
+class BaseInfoGain:
+    splitter: Splitter
+    info_gainer: InfoGainType
+
+    def __call__(
+        self,
+        data: np.ndarray,
+        y: NDArrayInt,
+        node_indices: TreeIndices,
+        feature: int,
+        **kwargs: Any
+    ) -> float:
+
+        return calc_info_gain(
+            data, y, node_indices, feature, self.splitter, self.info_gainer, **kwargs
+        )
 
 
-def calc_binary_info_gain(
-    data: np.ndarray, y: NDArrayInt, node_indices: list[int], feature: int
-) -> float:
-    pos_indices, neg_indices = binary_split(data, node_indices, feature)
-    y_node = y[node_indices]
-    y_pos = y[pos_indices]
-    y_neg = y[neg_indices]
-    return info_gain(y_node, y_pos, y_neg)
+def info_gain_factory(
+    name: str, splitter: Splitter, info_gainer: InfoGainType
+) -> InfoGain:
+
+    # kwds = {"splitter": types.MethodType(splitter), "info_gainer": info_gainer},
+    # new_class = types(name, (InfoGain, BaseInfoGain,),)
+
+    new_info_gain_class: type[BaseInfoGain] = type(
+        name,
+        (BaseInfoGain,),
+        {"splitter": staticmethod(splitter), "info_gainer": staticmethod(info_gainer)},
+    )
+    initialized_info_gain_class: InfoGain = new_info_gain_class()
+    return initialized_info_gain_class
