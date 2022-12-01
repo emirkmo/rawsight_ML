@@ -18,6 +18,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3.1.0
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
     - name: Set up Python 3.10
       uses: actions/setup-python@v4.3.0
       with:
@@ -49,3 +52,4 @@ jobs:
         message: Update coverage on Readme [skip ci]
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: master
+        force: true
