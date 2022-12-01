@@ -9,7 +9,7 @@ from rawsight.models import Model
 
 from .regularization import Regularization
 
-NDArrayInt = np.ndarray[Any, np.dtype[int]]
+NDArrayInt = np.ndarray[Any, np.dtype[np.int_]]
 _CostFunctionCallable = (
     Callable[[ArrayLike, ArrayLike], float] | Callable[[ArrayLike, NDArrayInt], float]
 )
