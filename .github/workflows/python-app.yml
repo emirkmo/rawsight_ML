@@ -40,6 +40,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         default-branch: master
     - name: create dynamic badge
+      if: ${{ github.ref == 'refs/heads/master' }}
       uses: schneegans/dynamic-badges-action@v1.6.0
       with:
         auth: ${{ secrets.GIST_SECRET }}
