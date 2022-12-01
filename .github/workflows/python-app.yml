@@ -45,6 +45,7 @@ jobs:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: 092a8fbf51f22d7ccf5fc01059f5d5d4
         filename: rawsight_badge.json
-        label: ${{ steps.coverageComment.outputs.coverage }}
+        label: Coverage Report
+        message: ${{ steps.coverageComment.outputs.coverage }}
         color: ${{ steps.coverageComment.outputs.color }}
         namedLogo: python
