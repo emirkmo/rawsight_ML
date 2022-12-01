@@ -3,7 +3,7 @@ Showing the Linear and Logistic Dense layers are just Regression and that
 we have parity with tensorflow for my implementation of Linear and Logistic Regression.
 """
 import tensorflow as tf
-from datasets import load_tumor_simple
+from rawsight.datasets import load_tumor_simple
 from rawsight.regression import LinearRegression, LogisticRegression
 
 

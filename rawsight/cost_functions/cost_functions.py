@@ -3,6 +3,7 @@ from typing import Any
 import numpy as np
 from numpy import ScalarType
 from numpy.typing import ArrayLike, NDArray
+
 from .cost_function_factory import CostFunction, NDArrayInt
 from .regularization import SquaredSumRegularization
 
@@ -48,6 +49,24 @@ def _cross_entropy_cost_gradient(fy: NDArray, y: NDArrayInt) -> ArrayLike:
 def categorial_cost(fy: NDArray, y: NDArrayInt) -> float:
     """Simply the fraction of incorrect predictions."""
     return np.sum(y != fy) / len(y)
+
+
+def binary_entropy(p1: float) -> float:
+    """Entropy of p1, fraction of positive examples."""
+    return -p1 * np.log2(p1) - (1 - p1) * np.log2(1 - p1)
+
+
+def binary_entropy_cost(y: NDArrayInt, positive: int = 1) -> float:
+    """binary Entropy cost based on positive examples."""
+    if len(y) == 0:
+        return 0
+
+    p1 = np.sum(y == positive) / len(y)
+
+    if p1 == 0 or p1 == 1:
+        return 0
+
+    return binary_entropy(p1)
 
 
 # def _cross_entropy_loss(fy: NDArray, y: NDArrayInt) -> NDArray:

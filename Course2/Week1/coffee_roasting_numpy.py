@@ -1,7 +1,7 @@
 import tensorflow as tf
 from numpy.typing import ArrayLike
 
-from datasets import load_coffee_data
+from rawsight.datasets import load_coffee_data
 import numpy as np
 from rawsight.nn.layers import DenseLayer
 

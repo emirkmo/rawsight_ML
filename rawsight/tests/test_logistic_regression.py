@@ -134,7 +134,7 @@ def test_logistic_regression_against_sklearn(regularized_logistic_regression):
 
 def test_logistic_regression_against_tensorflow():
     import tensorflow as tf
-    from datasets import load_tumor_simple
+    from rawsight.datasets import load_tumor_simple
     from rawsight.regression import LogisticRegression
 
     dataset = load_tumor_simple()

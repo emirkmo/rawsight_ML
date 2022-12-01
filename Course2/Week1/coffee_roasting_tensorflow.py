@@ -1,5 +1,5 @@
 import tensorflow as tf
-from datasets import load_coffee_data
+from rawsight.datasets import load_coffee_data
 import numpy as np
 
 data = load_coffee_data()
