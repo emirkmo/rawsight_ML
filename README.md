@@ -1,8 +1,5 @@
-[![Python tests](https://github.com/emirkmo/andrew-ng-ML-course-labs/actions/workflows/python-app.yml/badge.svg)](https://github.com/emirkmo/rawsight_ML/actions/workflows/python-app.yml)
-
-<!-- Pytest Coverage Comment:Begin -->
-<!-- Pytest Coverage Comment:End -->
-[![Coverage](https://img.shields.io/badge/Coverage-78%25-yellow.svg)]("https://github.com/emirkmo/rawsight_ML/blob/3f13fb64770c9e69c1419c44c079544b406574dc/README.md")
+[![Python tests](https://github.com/emirkmo/rawsight_ML/actions/workflows/python-app.yml/badge.svg)](https://github.com/emirkmo/rawsight_ML/actions/workflows/python-app.yml)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/emirkmo/092a8fbf51f22d7ccf5fc01059f5d5d4/raw/rawsight_badge.json)
 # RawSight ML: Raw Insight into ML
 ## Grants insight into ML algorithms with simple, object-oriented, raw `Python`/Numpy` implementations tested against `SKLearn`/`Tensorflow`
 libraries.
