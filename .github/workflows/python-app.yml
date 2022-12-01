@@ -33,7 +33,7 @@ jobs:
       run: |
         python -m pytest rawsight --cache-clear --cov=rawsight | tee pytest-coverage.txt
     - name: Pytest coverage report
-      uses: MishaKav/pytest-coverage-comment@latest
+      uses: MishaKav/pytest-coverage-comment@v1.1.39
       with:
         pytest-coverage-path: ./pytest-coverage.txt
         github-token: ${{ secrets.GITHUB_TOKEN }}
