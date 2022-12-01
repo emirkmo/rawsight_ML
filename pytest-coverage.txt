@@ -1,0 +1,62 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.8, pytest-7.2.0, pluggy-1.0.0
+rootdir: /home/runner/work/rawsight_ML/rawsight_ML
+plugins: cov-4.0.0
+collected 22 items
+
+rawsight/tests/test_binary_tree.py ..                                    [  9%]
+rawsight/tests/test_linear_regression.py ...                             [ 22%]
+rawsight/tests/test_logistic_regression.py ....                          [ 40%]
+rawsight/tests/test_normalization.py .......                             [ 72%]
+rawsight/tests/test_softmax.py ......                                    [100%]
+
+=============================== warnings summary ===============================
+rawsight/tests/test_softmax.py::test_logistic_regression_with_softmax
+rawsight/tests/test_softmax.py::test_softmax_3d
+  /home/runner/work/rawsight_ML/rawsight_ML/rawsight/regression.py:228: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+  Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+    kwargs["y"] = kwargs["y"].astype(np.int)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform linux, python 3.10.8-final-0 -----------
+Name                                               Stmts   Miss  Cover
+----------------------------------------------------------------------
+rawsight/__init__.py                                   9      0   100%
+rawsight/cost_functions/__init__.py                    2      0   100%
+rawsight/cost_functions/cost_function_factory.py      55      8    85%
+rawsight/cost_functions/cost_functions.py             40      1    98%
+rawsight/cost_functions/regularization.py             23      3    87%
+rawsight/datasets/__init__.py                          1      0   100%
+rawsight/datasets/datasets.py                         94     39    59%
+rawsight/input_validation.py                          14      4    71%
+rawsight/models/__init__.py                            4      0   100%
+rawsight/models/linear.py                             23      3    87%
+rawsight/models/logistic.py                           27      1    96%
+rawsight/models/model.py                             112     23    79%
+rawsight/models/polynomial.py                         11      8    27%
+rawsight/models/softmax.py                            34     13    62%
+rawsight/nn/__init__.py                                0      0   100%
+rawsight/nn/layers.py                                 57     57     0%
+rawsight/nn/networks.py                               28     28     0%
+rawsight/normalization.py                             95     21    78%
+rawsight/optimizers.py                                41     15    63%
+rawsight/regression.py                                97      8    92%
+rawsight/scoring.py                                    3      0   100%
+rawsight/tests/__init__.py                             0      0   100%
+rawsight/tests/test_binary_tree.py                    26      0   100%
+rawsight/tests/test_linear_regression.py              64      3    95%
+rawsight/tests/test_logistic_regression.py            56      4    93%
+rawsight/tests/test_normalization.py                  45      5    89%
+rawsight/tests/test_softmax.py                        43      5    88%
+rawsight/trees/__init__.py                             4      0   100%
+rawsight/trees/_splitter_protocol.py                   6      1    83%
+rawsight/trees/binary_tree.py                         29      0   100%
+rawsight/trees/infogain.py                            29      2    93%
+rawsight/trees/splitting.py                           30      1    97%
+rawsight/trees/tree.py                                 5      0   100%
+rawsight/trees/tree_builder.py                        47      1    98%
+----------------------------------------------------------------------
+TOTAL                                               1154    254    78%
+
+======================= 22 passed, 2 warnings in 19.52s ========================
