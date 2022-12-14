@@ -67,3 +67,7 @@ exclude = '''
   | .coverage
 )/
 '''
+
+[tool.pytest.ini_options]
+testpaths = ["rawsight/tests"]
+addopts = "--cov=rawsight"
