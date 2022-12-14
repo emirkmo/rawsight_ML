@@ -7,3 +7,4 @@ utils/__pycache__/
 *.npy
 temp
 .vscode/launch.json
+.coverage
