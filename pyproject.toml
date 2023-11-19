@@ -67,3 +67,6 @@ exclude = '''
   | .coverage
 )/
 '''
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
