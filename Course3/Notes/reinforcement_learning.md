@@ -127,6 +127,7 @@ you guess it, and then you update it based on the Bellman equation.
 So assuming first y is y1 corresponding to result from s1 and a1:
 
 $y_1 = R(s_1) + \gamma \max_{a'} Q(s_1', a')$
+h
 $y_2 = R(s_2) + \gamma \max_{a'} Q(s_2', a')$
 
 To train neural network, we take training sample of x data, where y are just
@@ -147,5 +148,13 @@ This iteratively improves the Q function, making the NN a good estimate of Q(s, 
 
 One could imagine creating agents that start at random, and start improving, but we pick only the ones that improve the most and add a few random evolutions to the mix. This is called a genetic algorithm.
 
-### Algorithm refinements
+### Algorithmic Instability
 
+The practice of training a neural network to approximate Q(s, a) is unstable and
+prone to oscillations and instabilities.
+
+However, there are a few approaches to make it more stable. The lab starts with two:
+**Target Network** and **Experience Replay**.
+Target Network is a technique in which we use two networks instead of one.
+The first network is the one we are training, and the second network is the one we use to compute the target values.
+The target values are computed using the second network, and the loss is computed using the first network. The second network is updated to match the first network every N steps. Furthermore, the target network update is damped, which is also called **soft update**. Experience Replay is a technique in which we store the training samples in a buffer and sample from the buffer to train the network. This helps to avoid overfitting to the most recent samples.
