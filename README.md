@@ -36,3 +36,5 @@ The code is written by me to complete the lab, so is not copied. The
 
 
 Suggestions for improvement, comments, insights into software design, requests for new algorithms or questions about algorithm implementation are welcome!
+
+Note: Some of my lab work has been uploaded here for future reference.
