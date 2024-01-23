@@ -2,7 +2,6 @@
 ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/emirkmo/092a8fbf51f22d7ccf5fc01059f5d5d4/raw/rawsight_badge.json)
 # RawSight ML: Raw Python/Numpy ML Algorithms
 ### Grants insight into ML algorithms with simple, object-oriented, raw `Python`/`Numpy` implementations tested against `SKLearn`/`Tensorflow`
-libraries.
 
 The library is developed based on labs for Stanford ML (Andrew NG's/Deeplearning.ai's) new Machine Learning course on Coursera and the repo includes solutions that use the underlying `rawsight` library developed by me to cover the algorithms from the course. 
 However,these are implemented in Python following Object-Oriented Design principles, vectorization by default with `numpy`, and clean code practices
@@ -20,7 +19,10 @@ Instructions and plotting
 are left to the
 actual lab jupyter notebook, which is easier to use, and can be found by enrolling
 in the course on Coursera.
-The code is written by me to complete the lab, so is not copied. The 
+The code is written by me to complete the lab, and was not copied. However, full disclosure;
+I started using github co-pilot after the midway point of the second course as I
+had started a new job and found myself with less time. So the NN code is heavily
+AI inspired.
 
 ## Design decisions
 
